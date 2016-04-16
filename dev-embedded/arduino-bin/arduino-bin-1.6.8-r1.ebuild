@@ -13,7 +13,7 @@ ARD_PN="${PN/-bin}"
 ARD_P="${ARD_PN}-${PV}"
 ARD_PF="${ARD_PN}-${PVR}"
 
-DESCRIPTION="Firefox Web Browser"
+DESCRIPTION="The open-source Arduino Software (IDE)"
 HOMEPAGE="http://arduino.cc/en/Main/Software"
 SRC_URI="${SRC_URI}
 	amd64? ( http://arduino.cc//download.php?f=/arduino-${PV}-linux64.tar.xz -> ${PN}_amd64-${PV}.tar.xz )
