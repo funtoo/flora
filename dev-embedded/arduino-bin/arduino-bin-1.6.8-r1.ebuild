@@ -91,6 +91,9 @@ pkg_postinst() {
 	# Update mimedb for the new .desktop file
 	fdo-mime_desktop_database_update
 	gnome2_icon_cache_update
+	# Users need to be in uucp group for Arduino access to devices.
+	elog "You must be in the uucp group use Arduino."
+	elog ""
 }
 
 pkg_postrm() {
