@@ -42,7 +42,7 @@ DEPEND="
 		dev-qt/qtx11extras:5
 	)
 	media-libs/taglib
-	net-libs/htmlcxx
+	dev-cpp/htmlcxx
 	phonon? ( media-libs/phonon[qt4?,qt5?] )
 	mpv? ( media-video/mpv[libmpv] )
 	vlc? ( media-video/vlc[qt4?,qt5?] )
