@@ -10,11 +10,11 @@ SRC_URI="https://github.com/bk138/gromit-mpx/archive/${PV}.tar.gz -> ${P}.tar.gz
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="*"
-IUSE="X wayland"
+IUSE="wayland"
 
 RDEPEND="dev-libs/glib
 	dev-libs/libappindicator:3
-	X? ( x11-libs/libXi )
+	x11-libs/libXi
 	x11-libs/gtk+:3[wayland?]
 "
 DEPEND="${RDEPEND}"
