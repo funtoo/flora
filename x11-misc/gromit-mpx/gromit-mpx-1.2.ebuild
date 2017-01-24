@@ -3,7 +3,7 @@
 EAPI=6
 inherit cmake-utils
 
-DESCRIPTION="GRaphics Over MIscellaneous Things, a presentation helper"
+DESCRIPTION="Gromit-MPX is a multi-pointer port of the original Gromit annotation tool by Simon Budig."
 HOMEPAGE="https://github.com/bk138/gromit-mpx"
 SRC_URI="https://github.com/bk138/gromit-mpx/archive/${PV}.tar.gz -> ${P}.tar.gz"
 
