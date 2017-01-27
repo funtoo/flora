@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+  <maintainer type="person">
+    <email>antoine.pinsard@gmail.com</email>
+    <name>Antoine Pinsard</name>
+  </maintainer>
+  <longdescription>
+    Gromit-MPX is a multi-pointer GTK3 port of the original Gromit desktop
+    annotation tool. It enables graphical annotations with several pointers
+    at once and is A LOT faster than its predecessor since it uses the
+    XCOMPOSITE extension where available.
+  </longdescription>
+  <upstream>
+    <changelog>https://github.com/bk138/gromit-mpx/blob/master/ChangeLog</changelog>
+    <bugs-to>https://github.com/bk138/gromit-mpx/issues</bugs-to>
+  </upstream>
+</pkgmetadata>
