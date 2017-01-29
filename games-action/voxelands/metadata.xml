@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>antoine.pinsard@gmail.com</email>
+		<name>Antoine Pinsard</name>
+	</maintainer>
+	<longdescription>
+    Voxelands is a sandbox construction game based on Minetest, which was
+ inspired by earlier "voxel world" games such as Infiniminer. Gameplay
+ puts players in a fully destructible 3D game world where they can place
+ and dig numerous types of blocks, items and creatures using a variety
+ of tools. Inside the game world players can build structures, artworks
+ and anything else their creativity can think of on multiplayer servers
+ and singleplayer worlds across multiple game modes.
+	</longdescription>
+	<upstream>
+    <bugs-to>https://github.com/voxelands/voxelands/issues</bugs-to>
+	</upstream>
+	<use>
+		<flag name="server">Builds the dedicated server</flag>
+		<flag name="client">Builds the rich client</flag>
+		<flag name="audio">Enables audio support</flag>
+	</use>
+</pkgmetadata>
