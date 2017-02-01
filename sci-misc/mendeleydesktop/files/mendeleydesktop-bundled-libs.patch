@@ -1,0 +1,84 @@
+diff -Nuar mendeleydesktop-1.17.6-fixed/bin/mendeleydesktop mendeleydesktop-1.17.6/bin/mendeleydesktop
+--- mendeleydesktop-1.17.6-fixed/bin/mendeleydesktop	2017-01-31 18:26:18.314904017 +0200
++++ mendeleydesktop-1.17.6/bin/mendeleydesktop	2017-02-01 07:09:35.465684048 +0200
+@@ -67,7 +67,6 @@
+     if is_linux_distro_build():
+         results['MENDELEY_BASE'] = sys.path[0] + "/../../opt/mendeleydesktop"
+         results['MENDELEY_BIN'] = results['MENDELEY_BASE'] + "/bin/mendeleydesktop"
+-        results['MENDELEY_BUNDLED_QT_PLUGIN'] = results['MENDELEY_BASE'] + "/plugins/qt/plugins/"
+     else:
+         results['MENDELEY_BASE'] = sys.path[0] + "/../"
+         if platform.architecture()[0] == "64bit":
+@@ -75,39 +74,11 @@
+         else:
+             results['MENDELEY_BIN'] = results['MENDELEY_BASE'] + "/lib/mendeleydesktop/libexec/mendeleydesktop.i486"
+ 
+-        results['MENDELEY_BUNDLED_QT_PLUGIN'] = results['MENDELEY_BASE'] + "/lib/mendeleydesktop/plugins/"
+-
+     # Path to Mendeley Desktop and PDFNet libraries
+     results['MENDELEY_LIB'] = results['MENDELEY_BASE'] + "/lib/"
+-    results['MENDELEY_BUNDLED_CPP_LIB'] = results['MENDELEY_BASE'] + "/lib/cpp/"
+-    results['MENDELEY_BUNDLED_SSL_LIB'] = results['MENDELEY_BASE'] + "/lib/ssl/"
+-
+-    # Path to bundled Qt libraries
+-    results['MENDELEY_BUNDLED_QT_LIBRARY'] = results['MENDELEY_BASE'] + "/lib/qt/"
+-    results['MENDELEY_BUNDLED_SSL_LIBRARY'] = results['MENDELEY_BASE'] + "/lib/ssl/"
+ 
+     return results
+ 
+-def should_use_bundled_libstdc():
+-    """ Returns True if the system's libstdc++ is not new enough for Mendeley
+-    Desktop.
+-    """
+-
+-    # Check C++ runtime library version
+-    # The minimum C++ runtime lib version depends on the highest GLIBCXX_3.X.YY
+-    # symbol referenced in any of the bundled libraries, which corresponds to
+-    # the 'libstdc++.so.6.X.YY' lib names
+-    MINIMUM_CPP_VERSION = "6.0.15"
+-
+-    cpp_runtime_lib = find_library("libstdc++.so.6")
+-    cpp_runtime_version = library_version_from_path(cpp_runtime_lib)
+-
+-    if distutils.version.LooseVersion(cpp_runtime_version) < distutils.version.LooseVersion(MINIMUM_CPP_VERSION):
+-        print("Using bundled C++ runtime libraries")
+-        return True
+-    else:
+-        return False
+-
+ def set_environment():
+     """ Prepares the environment variables to run Mendeley Desktop. Specially
+     the LD_LIBRARY_PATH.
+@@ -117,9 +88,6 @@
+     # Mendeley after an auto-update
+     os.environ["MENDELEY_GENERIC"] = get_paths()['SCRIPT']
+ 
+-    # Path to the BUNDLED_QT_PLUGIN
+-    os.environ["MENDELEY_BUNDLED_QT_PLUGIN_PATH"] = get_paths()['MENDELEY_BUNDLED_QT_PLUGIN']
+-
+     if "LD_LIBRARY_PATH" in os.environ:
+         # We will keep the previous values (after Mendeley libraries)
+         new_lib_paths = os.environ["LD_LIBRARY_PATH"].split(":")
+@@ -131,14 +99,8 @@
+     else:
+         new_lib_paths = []
+ 
+-    new_lib_paths.insert(0,get_paths()['MENDELEY_BUNDLED_QT_LIBRARY'])
+-
+     new_lib_paths.insert(0,get_paths()['MENDELEY_LIB'])
+ 
+-    # Uses the bundled libstdc path if needed
+-    if should_use_bundled_libstdc():
+-        new_lib_paths.insert(0,get_paths()['MENDELEY_BUNDLED_CPP_LIB'])
+-
+     os.environ["LD_LIBRARY_PATH"] = ":".join(new_lib_paths)
+ 
+ def is_linux_distro_build():
+@@ -191,7 +153,6 @@
+     print("ENVIRONMENT:")
+     print_environment_variable("LD_LIBRARY_PATH")
+     print_environment_variable("LD_LIBRARY_PATH_ORIGINAL")
+-    print_environment_variable("MENDELEY_BUNDLED_QT_PLUGIN_PATH")
+ 
+     print("")
+ 
