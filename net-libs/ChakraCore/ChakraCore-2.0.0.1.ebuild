@@ -2,10 +2,9 @@
 
 EAPI=6
 
-
 DESCRIPTION="ChakraCore is the core part of the Chakra Javascript engine that powers Microsoft Edge"
-HOMEPAGE="https://github.com/Microsoft/ChakraCore/"
-SRC_URI="https://github.com/Microsoft/ChakraCore/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+HOMEPAGE="https://github.com/CauldronDevelopmentLLC/ChakraCore/"
+SRC_URI="https://github.com/CauldronDevelopmentLLC/ChakraCore/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="MIT"
 SLOT=0
@@ -22,11 +21,16 @@ DEPEND="${RDEPEND}
 "
 
 src_compile() {
-	./build.sh || die "Build failed"
+	./build.sh --static -j 8 || die "Build failed"
 }
 
 src_install() {
-	into /usr
-	dobin BuildLinux/Release/ch
-	dolib BuildLinux/Release/libChakraCore.so
+	cd $T
+	for i in $(find ${S}/Build* -name \*.a); do
+		ar x $i
+	done
+	ar rcs ${S}/libChakraCore.a *.o
+	dodir /opt/${PN}
+	insinto /opt/${PN}
+	doins -r ${S}/*
 }
