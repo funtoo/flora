@@ -12,7 +12,7 @@ LICENSE="GPL-2+"
 SLOT=0
 KEYWORDS="~*"
 
-IUSE=""
+IUSE="examples"
 
 RDEPEND="
 	dev-libs/cbang[ChakraCore]
@@ -42,4 +42,13 @@ src_install() {
 	dolib libCAMotics.a
 	dolib libclipper.a
 	domenu CAMotics.desktop
+
+	insinto /usr/share/camotics
+	doins -r tpl_lib
+
+	if use examples ; then
+		docompress -x /usr/share/doc/camotics
+		insinto /usr/share/doc/camotics
+		doins -r examples
+	fi
 }
