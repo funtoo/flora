@@ -2,7 +2,7 @@
 
 EAPI=6
 
-inherit multilib scons-utils toolchain-funcs
+inherit multilib scons-utils eutils
 
 DESCRIPTION="Open-Source Simulation & Computer Aided Machining - A 3-axis CNC GCode simulator "
 HOMEPAGE="https://github.com/CauldronDevelopmentLLC/CAMotics"

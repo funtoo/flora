@@ -2,7 +2,7 @@
 
 EAPI=6
 
-inherit multilib scons-utils toolchain-funcs git-r3
+inherit multilib scons-utils git-r3
 
 DESCRIPTION="C! (cbang) is a library of cross-platform C++ utilities"
 HOMEPAGE="https://github.com/CauldronDevelopmentLLC/cbang"
