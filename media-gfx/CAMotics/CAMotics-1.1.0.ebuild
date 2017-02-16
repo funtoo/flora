@@ -46,6 +46,9 @@ src_install() {
 	insinto /usr/share/camotics
 	doins -r tpl_lib
 
+	doicon images/camotics.png
+	doicon -s 128 images/camotics.png
+
 	if use examples ; then
 		docompress -x /usr/share/doc/camotics
 		insinto /usr/share/doc/camotics
