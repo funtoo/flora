@@ -2,7 +2,7 @@
 
 EAPI=6
 
-inherit multilib scons-utils eutils
+inherit multilib scons-utils gnome2-utils
 
 DESCRIPTION="Open-Source Simulation & Computer Aided Machining - A 3-axis CNC GCode simulator "
 HOMEPAGE="https://github.com/CauldronDevelopmentLLC/CAMotics"
@@ -26,6 +26,12 @@ DEPEND="${RDEPEND}
 "
 
 S="${WORKDIR}/${P}-release"
+
+src_prepare() {
+	# There should be no extension if the value is not an absolute path
+	sed -i 's/^Icon=camotics\.png$/Icon=camotics/' CAMotics.desktop
+	default
+}
 
 src_configure() {
 	export CHAKRA_CORE_HOME="/opt/ChakraCore"
@@ -54,4 +60,16 @@ src_install() {
 		insinto /usr/share/doc/camotics
 		doins -r examples
 	fi
+}
+
+pkg_preinst() {
+	gnome2_icon_savelist
+}
+
+pkg_postinst() {
+	gnome2_icon_cache_update
+}
+
+pkg_postrm() {
+	gnome2_icon_cache_update
 }
