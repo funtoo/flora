@@ -4,7 +4,7 @@ EAPI=6
 
 BRAVE_PN="${PN/-bin}"
 
-inherit eutils
+inherit eutils linux-info
 
 DESCRIPTION="Brave Web Browser"
 HOMEPAGE="https://brave.com"
@@ -25,6 +25,15 @@ DEPEND="${RDEPEND}
 "
 
 S="${WORKDIR}/Brave-linux-x64"
+
+pkg_setup() {
+	ERROR_PID_NS="PID_NS is required for sandbox to work"
+	ERROR_NET_NS="NET_NS is required for sandbox to work"
+	ERROR_USER_NS="USER_NS is required for sandbox to work"
+	ERROR_SECCOMP_FILTER="SECCOMP_FILTER is required for sandbox to work"
+	CONFIG_CHECK="~PID_NS ~NET_NS ~SECCOMP_FILTER ~USER_NS"
+	check_extra_config
+}
 
 src_install() {
 	declare BRAVE_HOME=/opt/${BRAVE_PN}
@@ -50,4 +59,13 @@ src_install() {
 	insinto /etc/revdep-rebuild
 	echo "SEARCH_DIRS_MASK=${BRAVE_HOME}" >> ${T}/10${PN}
 	doins "${T}"/10${PN} || die
+}
+
+pkg_postinst() {
+	elog "NOTE: If Brave does not start and shows an error about sandboxing,"
+	elog "you may need to enable userns in your kernel."
+	elog "To do so, you can append the following line into /etc/sysctl.conf:"
+	elog " kernel.unprivileged_userns_clone = 1"
+	elog "and run sysctl -p"
+	elog "Running brave with the --no-sandbox flag is NOT recommended!"
 }
