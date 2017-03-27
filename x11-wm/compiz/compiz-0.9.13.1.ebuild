@@ -2,7 +2,8 @@
 
 EAPI=5
 
-inherit cmake-utils eutils gnome2-utils toolchain-funcs python versionator
+PYTHON_COMPAT=( python2_7 )
+inherit cmake-utils eutils gnome2-utils toolchain-funcs python-single-r1 versionator
 SRC_URI="https://launchpad.net/${PN}/$(get_version_component_range 1-3)/${PV}/+download/${P}.tar.bz2"
 KEYWORDS="*"
 DESCRIPTION="OpenGL window and compositing manager"
@@ -108,7 +109,7 @@ src_prepare() {
 }
 
 pkg_setup() {
-	python_set_active_version 2
+	python-single-r1_pkg_setup
 }
 
 src_configure() {
