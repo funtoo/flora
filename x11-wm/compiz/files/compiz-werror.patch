@@ -1,0 +1,12 @@
+diff -Nuar compiz-0.9.13.1/cmake/CompizCommon.cmake compiz-0.9.13.1-fixed/cmake/CompizCommon.cmake
+--- compiz-0.9.13.1/cmake/CompizCommon.cmake	2016-11-11 16:20:40.000000000 +0000
++++ compiz-0.9.13.1-fixed/cmake/CompizCommon.cmake	2017-03-31 09:31:46.641244107 +0000
+@@ -74,7 +74,7 @@
+ endif ()
+ 
+ if (${CMAKE_PROJECT_NAME} STREQUAL "compiz")
+-    set (COMPIZ_WERROR_DEFAULT ON)
++	set (COMPIZ_WERROR_DEFAULT OFF)
+ else ()
+     set (COMPIZ_WERROR_DEFAULT OFF)
+ endif ()
