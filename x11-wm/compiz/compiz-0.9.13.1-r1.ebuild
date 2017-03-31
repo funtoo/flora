@@ -12,7 +12,7 @@ HOMEPAGE="http://www.compiz.org/"
 LICENSE="GPL-2 LGPL-2.1 MIT"
 SLOT="0"
 
-IUSE="+cairo debug dbus fuse gnome gtk +svg test"
+IUSE="+cairo dbus fuse gnome +svg test"
 
 COMMONDEPEND="
 		dev-libs/boost
@@ -38,15 +38,13 @@ COMMONDEPEND="
 		virtual/glu
 		cairo? ( x11-libs/cairo[X] )
 		fuse? ( sys-fs/fuse )
-		gtk? (
-				>=x11-libs/gtk+-2.18.0
-				>=x11-libs/libwnck-2.19.4
-				x11-libs/pango
-				gnome? (
-						gnome-base/gnome-desktop
-						gnome-base/gconf
+		x11-libs/gtk+:3
+		x11-libs/libwnck:3
+		x11-libs/pango
+		gnome? (
+				gnome-base/gnome-desktop
+				gnome-base/gconf
 				)
-		)
 		svg? (
 				gnome-base/librsvg:2
 				x11-libs/cairo
@@ -55,6 +53,8 @@ COMMONDEPEND="
 
 DEPEND="${COMMONDEPEND}
 		app-admin/chrpath
+		dev-util/gcovr
+		dev-util/lcov
 		virtual/pkgconfig
 		x11-proto/damageproto
 		x11-proto/xineramaproto
@@ -67,7 +67,8 @@ RDEPEND="${COMMONDEPEND}
 		dev-python/pygtk
 		x11-apps/mesa-progs
 		x11-apps/xvinfo
-		x11-themes/hicolor-icon-theme"
+		x11-themes/hicolor-icon-theme
+		x11-wm/metacity"
 
 # TODO:
 # - Remove automagic dependency for coverage report generation tools
@@ -99,8 +100,6 @@ pkg_pretend() {
 #}
 src_prepare() {
 
-epatch "${FILESDIR}"/${PN}-werror.patch
-
 	echo "gtk/gnome/compiz-wm.desktop.in" >> "${S}/po/POTFILES.skip"
 	echo "metadata/core.xml.in" >> "${S}/po/POTFILES.skip"
 
@@ -118,18 +117,17 @@ src_configure() {
 		"$(cmake-utils_use_use gnome GCONF)"
 		"$(cmake-utils_use_use gnome GNOME)"
 		"$(cmake-utils_use_use gnome GSETTINGS)"
-		"$(cmake-utils_use_use gtk GTK)"
 		"$(cmake-utils_use test COMPIZ_BUILD_TESTING)"
-		"-DCMAKE_INSTALL_PREFIX=/usr"
-		"-DCMAKE_C_FLAGS=$(usex debug '-DDEBUG -ggdb' '')"
-		"-DCMAKE_CXX_FLAGS=$(usex debug '-DDEBUG -ggdb' '')"
-		"-DCOMPIZ_DEFAULT_PLUGINS=ccp"
-		"-DCOMPIZ_DISABLE_SCHEMAS_INSTALL=ON"
-		"-DCOMPIZ_PACKAGING_ENABLED=ON"
-		"-DUSE_KDE4=OFF"
-		"-HAVE_WNCK_WINDOW_HAS_NAME=1"
-		"-Wno-dev=ON")
-
+		-DCMAKE_BUILD_TYPE="Release" \
+		-DBUILD_METACITY=On \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCOMPIZ_DEFAULT_PLUGINS="composite,opengl,decor,resize,place,move,compiztoolbox,staticswitcher,regex,animation,wall,ccp" \
+		-DCOMPIZ_DISABLE_SCHEMAS_INSTALL=On \
+		-DCOMPIZ_WERROR=Off \
+		-DBUILD_GTK=On \
+		-DCOMPIZ_PACKAGING_ENABLED=On \
+		-DUSE_KDE4=Off
+)
 	cmake-utils_src_configure
 }
 
