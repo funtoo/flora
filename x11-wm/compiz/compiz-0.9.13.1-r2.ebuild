@@ -86,9 +86,9 @@ RDEPEND="${COMMONDEPEND}
 
 pkg_pretend() {
 	if [[ ${MERGE_TYPE} != binary ]]; then
-		[[ $(gcc-major-version) -lt 4 ]] || \
-		(	[[ $(gcc-major-version) -eq 4 && $(gcc-minor-version) -lt 6 ]] ) \
-		&& die "Sorry, but GCC version 4.6 or greater is required to continue."
+		[[ $(gcc-major-version) -lt 5 ]] || \
+		(	[[ $(gcc-major-version) -eq 4 && $(gcc-minor-version) -lt 3 ]] ) \
+		&& die "Sorry, but GCC version 5.3 or greater is required to continue."
 	fi
 }
 
