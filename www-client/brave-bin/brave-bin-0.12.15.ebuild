@@ -4,8 +4,6 @@ EAPI=6
 
 BRAVE_PN="${PN/-bin}"
 
-inherit eutils
-
 DESCRIPTION="Brave Web Browser"
 HOMEPAGE="https://brave.com"
 LICENSE="MPL-2.0"
