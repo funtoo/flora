@@ -1,0 +1,208 @@
+From 0a05bd640fb5d537b49e34179693759f4070a703 Mon Sep 17 00:00:00 2001
+From: Saul Ibarra <saul@ag-projects.com>
+Date: Wed, 2 Mar 2016 09:40:04 +0000
+Subject: [PATCH] pjsip: fix compilation warnings with recent versions of
+ FFmpeg
+
+---
+ .../pjmedia/src/pjmedia-codec/ffmpeg_vid_codecs.c  | 16 +++----
+ .../pjmedia/src/pjmedia/converter_libswscale.c     |  2 +-
+ deps/pjsip/pjmedia/src/pjmedia/ffmpeg_util.c       | 56 +++++++++-------------
+ deps/pjsip/pjmedia/src/pjmedia/ffmpeg_util.h       |  4 +-
+ 4 files changed, 33 insertions(+), 45 deletions(-)
+
+diff --git a/deps/pjsip/pjmedia/src/pjmedia-codec/ffmpeg_vid_codecs.c b/deps/pjsip/pjmedia/src/pjmedia-codec/ffmpeg_vid_codecs.c
+index a4e64e5..cf85940 100644
+--- a/deps/pjsip/pjmedia/src/pjmedia-codec/ffmpeg_vid_codecs.c
++++ b/deps/pjsip/pjmedia/src/pjmedia-codec/ffmpeg_vid_codecs.c
+@@ -185,7 +185,7 @@ typedef struct ffmpeg_private
+     /* The ffmpeg decoder cannot set the output format, so format conversion
+      * may be needed for post-decoding.
+      */
+-    enum PixelFormat		     expected_dec_fmt;
++    enum AVPixelFormat		     expected_dec_fmt;
+ 						/**< Expected output format of 
+ 						     ffmpeg decoder	    */
+ 
+@@ -668,7 +668,7 @@ PJ_DEF(pj_status_t) pjmedia_codec_ffmpeg_vid_init(pjmedia_vid_codec_mgr *mgr,
+ 	    pjmedia_format_id raw_fmt[PJMEDIA_VID_CODEC_MAX_DEC_FMT_CNT];
+ 	    unsigned raw_fmt_cnt = 0;
+ 	    unsigned raw_fmt_cnt_should_be = 0;
+-	    const enum PixelFormat *p = c->pix_fmts;
++	    const enum AVPixelFormat *p = c->pix_fmts;
+ 
+ 	    for(;(p && *p != -1) &&
+ 		 (raw_fmt_cnt < PJMEDIA_VID_CODEC_MAX_DEC_FMT_CNT);
+@@ -1091,7 +1091,7 @@ static void print_ffmpeg_err(int err)
+ static pj_status_t open_ffmpeg_codec(ffmpeg_private *ff,
+                                      pj_mutex_t *ff_mutex)
+ {
+-    enum PixelFormat pix_fmt;
++    enum AVPixelFormat pix_fmt;
+     pjmedia_video_format_detail *vfd;
+     pj_bool_t enc_opened = PJ_FALSE, dec_opened = PJ_FALSE;
+     pj_status_t status;
+@@ -1424,8 +1424,8 @@ static pj_status_t ffmpeg_codec_encode_whole(pjmedia_vid_codec *codec,
+     /* Check if encoder has been opened */
+     PJ_ASSERT_RETURN(ff->enc_ctx, PJ_EINVALIDOP);
+ 
+-    memset(&avframe, 0, sizeof(AVFrame));
+-    avcodec_get_frame_defaults(&avframe);
++    pj_bzero(&avframe, sizeof(avframe));
++    av_frame_unref(&avframe);
+ 
+     // Let ffmpeg manage the timestamps
+     /*
+@@ -1469,7 +1469,7 @@ static pj_status_t ffmpeg_codec_encode_whole(pjmedia_vid_codec *codec,
+     } else {
+         output->size = err;
+ 	output->bit_info = 0;
+-	if (ff->enc_ctx->coded_frame->key_frame)
++	if (avpacket.flags & AV_PKT_FLAG_KEY)
+ 	    output->bit_info |= PJMEDIA_VID_FRM_KEYFRAME;
+     }
+ 
+@@ -1675,8 +1675,8 @@ static pj_status_t ffmpeg_codec_decode_whole(pjmedia_vid_codec *codec,
+      * whole decoding session, and seems to be freed when the codec context
+      * closed).
+      */
+-    memset(&avframe, 0, sizeof(AVFrame));
+-    avcodec_get_frame_defaults(&avframe);
++    pj_bzero(&avframe, sizeof(avframe));
++    av_frame_unref(&avframe);
+ 
+     /* Init packet, the container of the encoded data */
+     av_init_packet(&avpacket);
+diff --git a/deps/pjsip/pjmedia/src/pjmedia/converter_libswscale.c b/deps/pjsip/pjmedia/src/pjmedia/converter_libswscale.c
+index 3bb1c6a..86fa766 100644
+--- a/deps/pjsip/pjmedia/src/pjmedia/converter_libswscale.c
++++ b/deps/pjsip/pjmedia/src/pjmedia/converter_libswscale.c
+@@ -66,7 +66,7 @@ static pj_status_t factory_create_converter(pjmedia_converter_factory *cf,
+ 					    const pjmedia_conversion_param *prm,
+ 					    pjmedia_converter **p_cv)
+ {
+-    enum PixelFormat srcFormat, dstFormat;
++    enum AVPixelFormat srcFormat, dstFormat;
+     const pjmedia_video_format_detail *src_detail, *dst_detail;
+     const pjmedia_video_format_info *src_fmt_info, *dst_fmt_info;
+     struct SwsContext *sws_ctx;
+diff --git a/deps/pjsip/pjmedia/src/pjmedia/ffmpeg_util.c b/deps/pjsip/pjmedia/src/pjmedia/ffmpeg_util.c
+index cebea25..4c3d5ad 100644
+--- a/deps/pjsip/pjmedia/src/pjmedia/ffmpeg_util.c
++++ b/deps/pjsip/pjmedia/src/pjmedia/ffmpeg_util.c
+@@ -26,40 +26,28 @@
+ #include "ffmpeg_util.h"
+ #include <libavformat/avformat.h>
+ 
+-/* PIX_FMT_GBR24P hassle:
+- * - PIX_FMT_GBR24P is introduced (perhaps in avutil 51.20.1)
+- * - suddenly PIX_FMT_GBR24P is replaced by PIX_FMT_GBRP, no alias defined,
+- *   so PIX_FMT_GBR24P is just gone! (perhaps in avutil 51.42.0)
+- * - then lately PIX_FMT_GBR24P is defined as PIX_FMT_GBRP
+- */
+-#if !defined(PIX_FMT_GBR24P) && \
+-    LIBAVUTIL_VERSION_INT >= AV_VERSION_INT(51,42,0)
+-#  define PIX_FMT_GBR24P PIX_FMT_GBRP
+-#endif
+ 
+-/* Conversion table between pjmedia_format_id and PixelFormat */
++/* Conversion table between pjmedia_format_id and AVPixelFormat */
+ static const struct ffmpeg_fmt_table_t
+ {
+     pjmedia_format_id	id;
+-    enum PixelFormat	pf;
++    enum AVPixelFormat	pf;
+ } ffmpeg_fmt_table[] =
+ {
+-    { PJMEDIA_FORMAT_ARGB, PIX_FMT_ARGB},
+-    { PJMEDIA_FORMAT_RGBA, PIX_FMT_RGBA},
+-    { PJMEDIA_FORMAT_RGB24,PIX_FMT_BGR24},
+-    { PJMEDIA_FORMAT_BGRA, PIX_FMT_BGRA},
+-#if LIBAVUTIL_VERSION_INT >= AV_VERSION_INT(51, 20, 1)
+-    { PJMEDIA_FORMAT_GBRP, PIX_FMT_GBR24P},
+-#endif
+-
+-    { PJMEDIA_FORMAT_AYUV, PIX_FMT_NONE},
+-    { PJMEDIA_FORMAT_YUY2, PIX_FMT_YUYV422},
+-    { PJMEDIA_FORMAT_UYVY, PIX_FMT_UYVY422},
+-    { PJMEDIA_FORMAT_I420, PIX_FMT_YUV420P},
+-    //{ PJMEDIA_FORMAT_YV12, PIX_FMT_YUV420P},
+-    { PJMEDIA_FORMAT_I422, PIX_FMT_YUV422P},
+-    { PJMEDIA_FORMAT_I420JPEG, PIX_FMT_YUVJ420P},
+-    { PJMEDIA_FORMAT_I422JPEG, PIX_FMT_YUVJ422P},
++    { PJMEDIA_FORMAT_ARGB, AV_PIX_FMT_ARGB},
++    { PJMEDIA_FORMAT_RGBA, AV_PIX_FMT_RGBA},
++    { PJMEDIA_FORMAT_RGB24,AV_PIX_FMT_BGR24},
++    { PJMEDIA_FORMAT_BGRA, AV_PIX_FMT_BGRA},
++    { PJMEDIA_FORMAT_GBRP, AV_PIX_FMT_GBR24P},
++
++    { PJMEDIA_FORMAT_AYUV, AV_PIX_FMT_NONE},
++    { PJMEDIA_FORMAT_YUY2, AV_PIX_FMT_YUYV422},
++    { PJMEDIA_FORMAT_UYVY, AV_PIX_FMT_UYVY422},
++    { PJMEDIA_FORMAT_I420, AV_PIX_FMT_YUV420P},
++    //{ PJMEDIA_FORMAT_YV12, AV_PIX_FMT_YUV420P},
++    { PJMEDIA_FORMAT_I422, AV_PIX_FMT_YUV422P},
++    { PJMEDIA_FORMAT_I420JPEG, AV_PIX_FMT_YUVJ420P},
++    { PJMEDIA_FORMAT_I422JPEG, AV_PIX_FMT_YUVJ422P},
+ };
+ 
+ /* Conversion table between pjmedia_format_id and CodecID */
+@@ -140,22 +128,22 @@ static void ffmpeg_log_cb(void* ptr, int level, const char* fmt, va_list vl)
+ 
+ 
+ pj_status_t pjmedia_format_id_to_PixelFormat(pjmedia_format_id fmt_id,
+-					     enum PixelFormat *pixel_format)
++					     enum AVPixelFormat *pixel_format)
+ {
+     unsigned i;
+     for (i=0; i<PJ_ARRAY_SIZE(ffmpeg_fmt_table); ++i) {
+ 	const struct ffmpeg_fmt_table_t *t = &ffmpeg_fmt_table[i];
+-	if (t->id==fmt_id && t->pf != PIX_FMT_NONE) {
++	if (t->id==fmt_id && t->pf != AV_PIX_FMT_NONE) {
+ 	    *pixel_format = t->pf;
+ 	    return PJ_SUCCESS;
+ 	}
+     }
+ 
+-    *pixel_format = PIX_FMT_NONE;
++    *pixel_format = AV_PIX_FMT_NONE;
+     return PJ_ENOTFOUND;
+ }
+ 
+-pj_status_t PixelFormat_to_pjmedia_format_id(enum PixelFormat pf,
++pj_status_t PixelFormat_to_pjmedia_format_id(enum AVPixelFormat pf,
+ 					     pjmedia_format_id *fmt_id)
+ {
+     unsigned i;
+@@ -176,13 +164,13 @@ pj_status_t pjmedia_format_id_to_CodecID(pjmedia_format_id fmt_id,
+     unsigned i;
+     for (i=0; i<PJ_ARRAY_SIZE(ffmpeg_codec_table); ++i) {
+ 	const struct ffmpeg_codec_table_t *t = &ffmpeg_codec_table[i];
+-	if (t->id==fmt_id && t->codec_id != PIX_FMT_NONE) {
++	if (t->id==fmt_id && t->codec_id != AV_PIX_FMT_NONE) {
+ 	    *codec_id = t->codec_id;
+ 	    return PJ_SUCCESS;
+ 	}
+     }
+ 
+-    *codec_id = (unsigned)PIX_FMT_NONE;
++    *codec_id = (unsigned)AV_PIX_FMT_NONE;
+     return PJ_ENOTFOUND;
+ }
+ 
+diff --git a/deps/pjsip/pjmedia/src/pjmedia/ffmpeg_util.h b/deps/pjsip/pjmedia/src/pjmedia/ffmpeg_util.h
+index ffe3b7c..49c95e7 100644
+--- a/deps/pjsip/pjmedia/src/pjmedia/ffmpeg_util.h
++++ b/deps/pjsip/pjmedia/src/pjmedia/ffmpeg_util.h
+@@ -41,9 +41,9 @@ void pjmedia_ffmpeg_add_ref();
+ void pjmedia_ffmpeg_dec_ref();
+ 
+ pj_status_t pjmedia_format_id_to_PixelFormat(pjmedia_format_id fmt_id,
+-					     enum PixelFormat *pixel_format);
++					     enum AVPixelFormat *pixel_format);
+ 
+-pj_status_t PixelFormat_to_pjmedia_format_id(enum PixelFormat pf,
++pj_status_t PixelFormat_to_pjmedia_format_id(enum AVPixelFormat pf,
+ 					     pjmedia_format_id *fmt_id);
+ 
+ pj_status_t pjmedia_format_id_to_CodecID(pjmedia_format_id fmt_id,
