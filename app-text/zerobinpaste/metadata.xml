@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<herd>funtoo</herd>
+	<maintainer>
+		<email>antoine.pinsard@gmail.com</email>
+		<name>Antoine Pinsard</name>
+	</maintainer>
+	<longdescription>
+		Paste content of files or stdin to a 0bin site.
+	</longdescription>
+	<upstream>
+		<changelog>https://github.com/sametmax/0bin/releases</changelog>
+		<bugs-to>https://github.com/sametmax/0bin/issues</bugs-to>
+	</upstream>
+	<use>
+	</use>
+</pkgmetadata>
