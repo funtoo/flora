@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<herd>funtoo</herd>
+	<maintainer>
+		<email>antoine.pinsard@gmail.com</email>
+		<name>Antoine Pinsard</name>
+	</maintainer>
+	<longdescription>
+		iwlib is a package for interfacing with iwlib, providing an implementation to the wireless tools in Linux.
+
+		While very incomplete at the moment, it aims to eventually become a complete implementation, as features become necessary. If you find some functionality missing, feel free to contribute to the project, or create an issue on the bug tracker.
+
+		Currently it provides what I consider the bare minimum to become useful - scanning, setting the ESSID of a device, and getting the current configuration back from a device.
+	</longdescription>
+	<upstream>
+		<changelog>https://github.com/nathan-hoad/python-iwlib#change-history</changelog>
+    <bugs-to>https://github.com/nathan-hoad/python-iwlib/issues</bugs-to>
+	</upstream>
+	<use>
+	</use>
+</pkgmetadata>
