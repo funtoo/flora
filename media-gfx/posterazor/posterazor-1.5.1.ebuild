@@ -38,6 +38,6 @@ src_install() {
 	exeinto /usr/bin
 	doexe ${WORKDIR}/${P}_build/PosteRazor
 	newicon ${S}/PosteRazor.xpm ${PN}.xpm
-	make_desktop_entry PosterRazor "PosteRazor" /usr/share/pixmaps/${PN}.xpm
+	make_desktop_entry PosteRazor "PosteRazor" /usr/share/pixmaps/${PN}.xpm
 }
 
