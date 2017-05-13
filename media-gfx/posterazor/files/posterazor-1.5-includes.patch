@@ -1,0 +1,27 @@
+diff -up PosteRazor-1.5-Source/FlPosteRazorHelpDialog.cpp.includes PosteRazor-1.5-Source/FlPosteRazorHelpDialog.cpp
+--- PosteRazor-1.5-Source/src/FlPosteRazorHelpDialog.cpp.includes	2008-05-16 21:02:56.000000000 +0200
++++ PosteRazor-1.5-Source/src/FlPosteRazorHelpDialog.cpp	2008-10-23 22:01:28.000000000 +0200
+@@ -21,7 +21,9 @@
+ */
+
+ #include "FlPosteRazorHelpDialog.h"
+-#include "Translations.h"
++#include "Translations.h"
++#include <strings.h>
++#include <string.h>
+
+ #if defined (WIN32)
+   #include <Shellapi.h>
+diff -up PosteRazor-1.5-Source/FlPosteRazorSpinner.cpp.includes PosteRazor-1.5-Source/FlPosteRazorSpinner.cpp
+--- PosteRazor-1.5-Source/FlPosteRazorSpinner.cpp.includes	2008-05-16 21:02:56.000000000 +0200
++++ PosteRazor-1.5-Source/FlPosteRazorSpinner.cpp	2008-10-23 22:00:56.000000000 +0200
+@@ -22,7 +22,8 @@
+
+ #include "FlPosteRazorSpinner.h"
+ #include <FL/Fl_Input.H>
+-#include <FL/Fl_Repeat_Button.H>
++#include <FL/Fl_Repeat_Button.H>
++#include <stdlib.h>
+ #include <stdio.h>
+ #include <math.h>
+ #ifndef WIN32
