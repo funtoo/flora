@@ -10,7 +10,7 @@ SRC_URI="mirror://funtoo/PosteRazor-1.5.1-Source.zip"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS=""
+KEYWORDS="*"
 IUSE=""
 S=${WORKDIR}/src
 
