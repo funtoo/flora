@@ -6,7 +6,7 @@ inherit flag-o-matic cmake-utils
 
 DESCRIPTION="PosteRazor cuts raster images into multipage PDF documents."
 HOMEPAGE="http://posterazor.sourceforge.net/"
-SRC_URI="mirror://sourceforge/posterazor/1.5.1/PosteRazor-1.5.1-Source.zip"
+SRC_URI="mirror://funtoo/PosteRazor-1.5.1-Source.zip"
 
 LICENSE="GPL-2"
 SLOT="0"
