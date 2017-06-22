@@ -22,7 +22,7 @@ RDEPEND="dev-python/six[${PYTHON_USEDEP}]
 	dev-python/pytz[${PYTHON_USEDEP}]
 	dev-python/kitchen[${PYTHON_USEDEP}]
 	dev-python/python-dateutil[${PYTHON_USEDEP}]
-	python_targets_python2_7? ( dev-python/ordereddict[${PYTHON_USEDEP}] )
+	python_targets_python2_7? ( dev-python/ordereddict[python_targets_python2_7] )
 	app-misc/task
 "
 DEPEND="${RDEPEND}
