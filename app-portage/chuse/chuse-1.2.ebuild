@@ -16,6 +16,11 @@ SRC_URI="https://gitlab.com/apinsard/chuse/repository/archive.tar.gz?ref=${PV} -
 DEPEND="dev-python/appi:0/0.1"
 RDEPEND="${DEPEND}"
 
+src_unpack() {
+	default
+	mv "${WORKDIR}/${P}"-* "${S}"
+}
+
 src_prepare() {
 	einfo "Converting shebangs for python3..."
 	python_fix_shebang chuse
