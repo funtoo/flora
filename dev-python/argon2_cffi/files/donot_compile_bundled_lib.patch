@@ -1,0 +1,26 @@
+--- /tmp/setup.py	2016-11-10 08:05:53.000000000 +0100
++++ argon2_cffi-16.3.0/setup.py	2017-08-14 14:54:46.000000000 +0200
+@@ -190,10 +190,7 @@
+         return {
+             "setup_requires": SETUP_REQUIRES,
+             "cffi_modules": CFFI_MODULES,
+-            "libraries": LIBRARIES,
+-            "cmdclass": {
+-                "build_clib": BuildCLibWithCompilerFlags,
+-            },
++            "libraries": [],
+         }
+ 
+ 
+--- /tmp/_ffi_build.py	2016-11-10 09:45:09.000000000 +0100
++++ argon2_cffi-16.3.0/src/argon2/_ffi_build.py	2017-08-14 15:25:46.000000000 +0200
+@@ -25,8 +25,7 @@
+ ffi = FFI()
+ ffi.set_source(
+     "_ffi", "#include <argon2.h>",
+-    include_dirs=include_dirs,
+-    libraries=["libargon2"],
++    libraries=["argon2"],
+ )
+ 
+ ffi.cdef("""\
