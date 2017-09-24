@@ -11,7 +11,6 @@ LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="*"
 IUSE="+server +client +audio"
-LINGUAS="af_ZA da de es fr hu hy it ja jbo nl no pl pt_BR ro ru vi"
 
 RDEPEND="
 	dev-games/irrlicht
@@ -34,11 +33,6 @@ src_unpack() {
 src_prepare() {
 	default
 	sed -i 's:^#include "\(.*\)\.h"$:#include "../\1.h":' src/{mapgen,nodemeta}/*.cpp
-	for lingua in ${LINGUAS}; do
-		if ! has ${lingua//[_@]/-}; then
-			rm -rf po/$lingua
-		fi
-	done
 }
 
 src_configure() {
