@@ -11,20 +11,35 @@ LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="*"
 IUSE="+server +client +audio"
+LINGUAS="af_ZA da de es fr hu hy it ja jbo nl no pl pt_BR ro ru vi"
 
 RDEPEND="
 	dev-games/irrlicht
 	media-libs/freetype
-	media-libs/openal
-	media-libs/libvorbis
-	media-libs/libogg
+	audio? (
+		media-libs/openal
+		media-libs/libvorbis
+		media-libs/libogg
+	)
 	sys-libs/zlib
 "
 DEPEND="${RDEPEND}
 	virtual/jpeg
 "
+src_unpack() {
+	default
+	mv "${WORKDIR}/${PN}-v${PV}"-* "${S}"
+}
 
-S="${WORKDIR}/${PN}-v${PV}-3ac3f431a26858857f6805ad33f5fe8aaa8d0765"
+src_prepare() {
+	default
+	sed -i 's:^#include "\(.*\)\.h"$:#include "../\1.h":' src/{mapgen,nodemeta}/*.cpp
+	for lingua in ${LINGUAS}; do
+		if ! has ${lingua//[_@]/-}; then
+			rm -rf po/$lingua
+		fi
+	done
+}
 
 src_configure() {
 	local mycmakeargs=(
