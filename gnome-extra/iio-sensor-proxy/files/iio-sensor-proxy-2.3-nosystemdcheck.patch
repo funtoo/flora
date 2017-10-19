@@ -1,0 +1,22 @@
+diff -Nuar iio-sensor-proxy-2.3/configure.ac iio-sensor-proxy-2.3-fixed/configure.ac
+--- iio-sensor-proxy-2.3/configure.ac	2017-09-20 19:38:59.000000000 +0300
++++ iio-sensor-proxy-2.3-fixed/configure.ac	2017-10-19 16:13:02.318508068 +0300
+@@ -32,7 +32,6 @@
+ 	    [with_udevrulesdir=$($PKG_CONFIG --variable=udevdir udev)"/rules.d"])
+ AC_SUBST([udevrulesdir], [$with_udevrulesdir])
+ 
+-PKG_CHECK_EXISTS(systemd, [], [AC_MSG_ERROR(systemd development libraries are required)])
+ AC_ARG_WITH([systemdsystemunitdir],
+ 	    AS_HELP_STRING([--with-systemdsystemunitdir=DIR], [Directory for systemd service files]),
+ 	    [],
+diff -Nuar iio-sensor-proxy-2.3/data/80-iio-sensor-proxy.rules iio-sensor-proxy-2.3-fixed/data/80-iio-sensor-proxy.rules
+--- iio-sensor-proxy-2.3/data/80-iio-sensor-proxy.rules	2016-12-28 12:22:49.000000000 +0200
++++ iio-sensor-proxy-2.3-fixed/data/80-iio-sensor-proxy.rules	2017-10-19 16:13:11.798508293 +0300
+@@ -14,7 +14,4 @@
+ 
+ ENV{IIO_SENSOR_PROXY_TYPE}=="", GOTO="iio_sensor_proxy_end"
+ 
+-# We got here because we have a sensor type, which means we need the service
+-TAG+="systemd", ENV{SYSTEMD_WANTS}+="iio-sensor-proxy.service"
+-
+ LABEL="iio_sensor_proxy_end"
