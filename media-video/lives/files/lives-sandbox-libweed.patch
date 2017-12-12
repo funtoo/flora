@@ -1,0 +1,13 @@
+diff -Nuar lives-2.8.7/libweed/Makefile.am lives-2.8.7-fixed/libweed/Makefile.am
+--- lives-2.8.7/libweed/Makefile.am	2016-04-22 06:57:56.000000000 +0300
++++ lives-2.8.7-fixed/libweed/Makefile.am	2017-12-12 12:25:12.990569225 +0200
+@@ -96,7 +96,7 @@
+ 
+ 
+ install-exec-hook:
+-	rm -f /usr/lib/libweed*.la
++#	rm -f /usr/lib/libweed*.la
+ ## The following is removed as it breaks packaging.
+ #	/sbin/ldconfig
+ 
+

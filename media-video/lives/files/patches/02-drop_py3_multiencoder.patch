@@ -1,0 +1,30 @@
+Description: Drop Python3 version of multiencoder plugin.
+Author: Alessio Treglia <alessio@debian.org>
+Bug-Ubuntu: https://bugs.launchpad.net/bugs/632833
+Forwarded: not-needed
+---
+ lives-plugins/plugins/encoders/Makefile.am |    1 -
+ lives-plugins/plugins/encoders/Makefile.in |    1 -
+ 2 files changed, 2 deletions(-)
+
+--- lives.orig/lives-plugins/plugins/encoders/Makefile.am
++++ lives/lives-plugins/plugins/encoders/Makefile.am
+@@ -7,7 +7,6 @@ encoder_DATA = encodedv_encoder \
+ ffmpeg_encoder \
+ mencoder_encoder \
+ mjpegtools_encoder \
+-multi_encoder \
+ multi_encoder3 \
+ qtutils_encoder \
+ sswf_encoder \
+--- lives.orig/lives-plugins/plugins/encoders/Makefile.in
++++ lives/lives-plugins/plugins/encoders/Makefile.in
+@@ -442,7 +442,6 @@ encoder_DATA = encodedv_encoder \
+ ffmpeg_encoder \
+ mencoder_encoder \
+ mjpegtools_encoder \
+-multi_encoder \
+ multi_encoder3 \
+ qtutils_encoder \
+ sswf_encoder \
+
