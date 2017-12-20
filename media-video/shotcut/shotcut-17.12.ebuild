@@ -31,6 +31,7 @@ RDEPEND="
 	dev-qt/qtgui:5
 	dev-qt/qtmultimedia:5
 	dev-qt/qtnetwork:5
+	dev-qt/qtconcurrent:5
 	dev-qt/qtopengl:5
 	dev-qt/qtprintsupport
 	dev-qt/qtsql:5
