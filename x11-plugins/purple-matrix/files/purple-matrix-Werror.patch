@@ -1,0 +1,12 @@
+diff -Nuar purple-matrix-1a53f61998407013719fdabdcff4ead3e9715340/Makefile.common purple-matrix-1a53f61998407013719fdabdcff4ead3e9715340-fixed/Makefile.common
+--- purple-matrix-1a53f61998407013719fdabdcff4ead3e9715340/Makefile.common	2017-09-27 11:16:10.000000000 +0300
++++ purple-matrix-1a53f61998407013719fdabdcff4ead3e9715340-fixed/Makefile.common	2018-01-13 19:26:20.737078699 +0200
+@@ -2,7 +2,7 @@
+ 
+ COMPILE.c = $(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
+ 
+-CFLAGS+=-Wall -g -O0 -Werror
++CFLAGS+=-Wall -g -O0
+ CFLAGS += -DPURPLE_PLUGINS 
+ 
+ # generate .d files when compiling
