@@ -5,7 +5,7 @@ EAPI=6
 
 DESCRIPTION="Changes the current Ruby."
 HOMEPAGE="https://github.com/postmodern/chruby"
-SRC_URI="https://github.com/postmodern/chruby/archive/v${PV}.tar.gz"
+SRC_URI="https://github.com/postmodern/chruby/archive/v${PV}.tar.gz -> ${PN}-${PV}.tar.gz"
 
 LICENSE="MIT"
 SLOT="0"
