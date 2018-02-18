@@ -3,9 +3,9 @@
 
 EAPI=6
 
-DESCRIPTION="A tool for changing your GEM_HOME."
-HOMEPAGE="https://github.com/postmodern/gem_home"
-SRC_URI="https://github.com/postmodern/gem_home/archive/v${PV}.tar.gz"
+DESCRIPTION="Changes the current Ruby."
+HOMEPAGE="https://github.com/postmodern/chruby"
+SRC_URI="https://github.com/postmodern/chruby/archive/v${PV}.tar.gz -> ${PN}-${PV}.tar.gz"
 
 LICENSE="MIT"
 SLOT="0"
@@ -16,9 +16,9 @@ DEPEND="|| ( >=app-shells/bash-3.0 app-shells/zsh )"
 RDEPEND="${DEPEND}"
 
 src_install() {
-	emake DESTDIR="${D}" PREFIX="${D}/usr/local" install
+	emake DESTDIR="${D}" install
 
 	dodir "/etc/profile.d"
 	insinto "/etc/profile.d"
-	newins "${FILESDIR}/systemwide.sh" "gem_home.sh"
+	newins "${FILESDIR}/systemwide.sh" "chruby.sh"
 }

@@ -3,9 +3,9 @@
 
 EAPI=6
 
-DESCRIPTION="Installs Ruby, JRuby, Rubinius, MagLev or MRuby"
+DESCRIPTION="Installs Ruby, JRuby, Rubinius, MagLev or MRuby."
 HOMEPAGE="https://github.com/postmodern/ruby-install"
-SRC_URI="https://github.com/postmodern/ruby-install/archive/v${PV}.tar.gz"
+SRC_URI="https://github.com/postmodern/ruby-install/archive/v${PV}.tar.gz -> ${PN}-${PV}.tar.gz"
 
 LICENSE="MIT"
 SLOT="0"
