@@ -5,7 +5,7 @@ EAPI=6
 
 DESCRIPTION="A tool for changing your GEM_HOME."
 HOMEPAGE="https://github.com/postmodern/gem_home"
-SRC_URI="https://github.com/postmodern/gem_home/archive/v${PV}.tar.gz"
+SRC_URI="https://github.com/postmodern/gem_home/archive/v${PV}.tar.gz -> ${PN}-${PV}.tar.gz"
 
 LICENSE="MIT"
 SLOT="0"
