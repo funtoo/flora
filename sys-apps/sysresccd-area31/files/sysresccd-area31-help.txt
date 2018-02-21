@@ -1,0 +1,183 @@
+Ajuda do RescueCD Area31 Tools
+____________________
+
+Primeiro, uma pequena ajuda. Sempre que você encontrar um texto
+como este durante a navegação, você pode se mover com esses comandos:
+
+PgDn/ESPAÇO	- Ir uma página para baixo
+PgUg/'b'	- Ir uma página para cima
+ENTER/DOWN/'j'	- Ir para a linha de baixo
+UP/'k'		- Ir para a linha de cima
+LEFT/'h'	- Ir para a esquerda (scroll)
+RIGHT/'l'	- Ir para a direita (Scroll)
+HOME/'g'	- Ir para o início do arquivo
+END/'G'	- Ir para o final do arquivo
+'/'		- Pesquisar para frente (para baixo)
+'?'		- Pesquisar para trás (para cima)
+'N'		- Repetir a última pesquisa (para baixo)
+'n'		- Repetir a última pesquisa (para cima)
+
+
+Além disso, você está executando um sistema operacional multitarefa de
+verdade, logo você não está confinado ao programa atual. Você pode entrar
+em outros consoles e dar uma olhada, a qualquer momento, sem perturbar o
+processo de chroot. Para fazer isso, você precisará aprender os comandos
+que controlam o console do Linux. Você vai usar esses comandos em todos
+os momento em que você estiver logado no console do RescueCD Area31.
+
+
+
+
+
+# "Virtual" consoles e scrollback
+
+Agora, a tela que você está olhando é provavelmente VIRTUAL CONSOLE
+NUMBER ONE, (ou / dev/tty1 no Linux-speak). Normalmente existem
+vários consoles virtuais disponíveis. Quando você entrar no sistema,
+há seis consoles. Para alternar entre eles, use Alt-F1, Alt-F2, Alt-F3
+para autologin ou Alt-F4, Alt-F5, Alt-F6 para logar com algum usuário especifico.
+Enquanto você estiver usando um console, você recebe uma pequena quantidade
+de tampão scrollback texto. Para rolar o console de volta, mantenha pressionada
+a tecla Shift direita e PageUp hit. Para rolar o console para a frente,
+hit PageDown enquanto segura a tecla shift direita para baixo. Isto pode ser
+especialmente útil para ler as mensagens de inicialização, que podem passar muito
+rápido na tela, ajudando no caso a ler de outra forma.
+
+
+Os três primeiros consoles são shells com auto-login.
+Use o quarto console em diante para efetuar login com algum usuário específico
+caso deseje cria-los.
+
+
+
+
+
+# KEYMAP - Alterando seu mapa teclado:
+
+KEYMAP: Esta opção permite que você remapeie o seu teclado para um dos muitos
+mapas internacionais fornecido com o Linux. Se você estiver usando um teclado
+br-abnt2, você pode pular esta opção.
+
+
+
+
+
+# Particionando seu disco
+
+Para personalizar o RescueCD será necessário dedicar uma partição Linux para ser
+montada em /mnt/custom para que os scripts façam a cópia dos arquivos necessários
+para a perfeita personalização. Será também possível utilizar um ambiente chroot
+do novo RescueCD personalizado para que alterações a quente sejam realizadas bem
+como compilação ou remoção de softwares diversos utilizando o Portage ou qualquer
+outra forma desejada.
+
+Você vai precisar de pelo menos um tipo de partição Linux, e opcionalmente uma
+partição swap. Na minha opinião, (se você tiver uma quantidade razoável de espaço
+em disco crie uma partição de pelo menos 50 GB para que recompilações de kernel por
+exemplo sejam feitas sem problemas. Como exemplo do mínimo necessário:
+
+    [ 30 GB ou mais para a partição /mnt/custom ]
+    [ 2 GB ou mais para a partição do tipo swap ]
+
+
+Algumas pessoas gostam de uma partição separada para armazenar as ISOs geradas, mas
+eu acho que é bobagem. Basta manter uma partição Linux com boa capacidade com um bom
+sistema de arquivos, como EXT4 ou reiserfs.
+
+A quantidade de espaço em disco que você vai querer dedicar ao Linux depende de que
+tipo de software você pretende compilar, e quanto de espaço você tem de disponível.
+Minha partição Linux em /mnt/custom é de cerca de 90 GB. Se você tem espaço de sobra,
+será mais fácil de compilar e testar eventuais bugs visto que logs consomem bastante
+espaço em disco. Grandes projetos de software também exigem bastante espaço em disco
+para compilação, como o libreOffice que exige 8 GB ou o firefox que exige 6 GB no cache.
+Também é útil ter uma partição com bastante espaço em disco para trabalhar com arquivos
+grandes, como os utilizados em editoração eletrônica ou aplicações gráficas diversas como
+audio e video.
+
+O sistema RescueCD Area31 possui editor vim, ferramentas diversas de rede, como nmap,
+tcpdump, iptraf, etc) vai usar cerca de 20 MB de memória ram com console de texto e cerca de
+90 MB de ram com interface gráfica.
+
+O particionamento é feito com uma ferramenta de particionamento, como fdisk. Há
+duas versões do Linux fdisk disponíveis agora em modo texto. 'fdisk' é o padrão e
+há também o 'cfdisk' que é uma versão mais amigável em linha de comando. A maioria das
+pessoas provavelmente irá usar o 'cfdisk' ou 'gparted', a não ser que seja um dinossauro
+como eu, preferindo o bom e velho 'fdisk'. De toda forma, qualquer um vai fazer o trabalho.
+
+Certifique-se de usar partições como tipo "83 (Linux)" ou o tipo "82 (Linux swap)" para
+que o RescueCD Area31 Tools possa reconhecê-los e montá-los em /mnt/custom e swap.
+No 'fdisk', use a tecla 't' para isso, e 'w' para gravar as alterações.
+
+Se você preferir uma ferramenta de particionamento gráfica fácil de usar, você pode usar
+o 'gparted', criando todas as suas partições via interface gráfica (startx).
+
+
+
+
+
+# SWAP
+
+Se a sua máquina não tem muita memória ram disponível, você deve saber como ativar uma
+partição swap para extendê-la, mesmo que o sistema trabalhe de forma mais lenta.
+
+Normalmente você não vai precisar formatar ou ativar uma swap para utilizar o RescueCD
+via liveCD para coisas triviais ou recuperação de dados, porém se você deseja compilar
+softwares ou personalizar o disco, ter uma swap ativa é algo interessante, principalmente
+em ambientes virtualizados.
+
+Depois que você criar a partição swap usando algum particionador, você precisará usar
+'mkswap' para formatá-la, e então ativá-la com 'swapon'.
+Verificando a tabela de partição usando 'fdisk-l', vemos estas linhas:
+
+   Dispositivo Boot	Início	Fim	Blocos	Tamanho	Id	Tipo
+   /dev/sda2		2048	8388607	8386560	4G	82	Linux swap / Solaris
+
+
+Então, o comando para formatá-la seria:
+
+  # mkswap /dev/sda2
+  # sync
+
+E para ativá-la:
+
+  # swapon /dev/sda2
+
+
+Caso deseje, utilize a opção ADDSWAP para formatar e montar de forma prática.
+
+
+
+
+
+# Personalize o RescueCD
+
+Caso deseje personalizar o RescueCD, acesse o menu principal e formate uma
+partição como tipo Linux, segundo as dicas anteriores. Eu costumo seguir esta
+ordem para personalizar o RescueCD:
+
+ADDSWAP (para configurar minha partição swap)
+TARGET (para configurar minhas partições Linux)
+CONFIGURE (para configurar ou montar o ambiente chroot)
+GENERATE (para gerar uma imagem ISO personalizada)
+
+Espero que estas opções sejam usadas de forma intuitiva. Basta ler as opções das
+telas cuidadosamente, lembrando que tanto o uso quanto a personalização exigem
+conhecimentos avançados da estrutura de sistemas Linux. Se você não sabe o que
+seja um sistema de arquivos, ou como funciona um kernel ou como um ambiente liveCD
+funciona, corra para as colinas.
+
+
+
+
+
+FINALIZAR: Isso fecha o RescueCD Area31 Tools.
+
+Divirta-se ao usar ou personalizar o RescueCD Area31!
+
+
+
+
+
+---
+Raphael Bastos - mailto: raphaelbastos@hackstore.com.br
+https://www.area31.net.br/wiki/RescueCD_oficial

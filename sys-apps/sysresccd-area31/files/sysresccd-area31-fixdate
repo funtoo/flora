@@ -1,0 +1,19 @@
+#!/bin/bash
+
+DIR_MNT="/mnt/custom"
+DIR_SYSTEM="${DIR_SYSTEM}/customcd/files"
+TMP="/tmp/sysresccd-area31"
+
+if [ ! -d ${TMP} ]; then
+	mkdir -p ${TMP}
+fi
+
+dialog --title ' Ajuste o relógio do sistema ' --timebox '\nDICA: Use as setas e o TAB.'   0 0 2> $TMP/SeTdate
+cat $TMP/SeTdate |sed s,\:`cut -d: -f3 $TMP/SeTdate`,,g |sed s,\:,,g > $TMP/hora
+# rm -f $TMP/hora
+
+if [ -r $TMP/hora ]; then
+date -s $( cat $TMP/hora )  1> /dev/null 2> /dev/null
+hwclock -w  1> /dev/null 2> /dev/null
+fi
+rm -f $TMP/hora

@@ -1,0 +1,78 @@
+#!/bin/bash
+
+DIR_MNT="/mnt/custom"
+DIR_SYSTEM="${DIR_SYSTEM}/customcd/files"
+TMP="/tmp/sysresccd-area31"
+
+
+if [ ! -d ${TMP} ]; then
+	mkdir -p ${TMP}
+fi
+
+rm -rf ${TMP}/SeTdevices
+
+fdisk -l 2> /dev/null | egrep -i 'Linux$' | sort 1> $TMP/SeTplist 2> /dev/null
+
+#LISTA=ls -lG /dev/disk/by-uuid/|grep root |cut -d'/' -f3
+#ls -1 /sys/block/|grep sd[a-z] > $TMP/SeTdevices
+#export $(blkid /dev/sda1|awk '{print $3}'|sed s,'\"',,g)
+
+ARQUIVO="${TMP}/list-mount"
+
+# gera lista de partições
+fdisk -l |grep -w "83 Linux" |cut -d" " -f1 > ${ARQUIVO}
+
+dialog --backtitle "RescueCD Area31 Partition Tools" \
+ --title " SELECIONE UM DISPOSITIVO " \
+ --menu "Selecione o dispositivo desejado para ser MONTADO em \"${DIR_MNT}\":" \
+10 40 6 $(cat $ARQUIVO | cut -d: -f1 | sed s,$," # ",) 2> $TMP/selectHD
+
+if [ ! $? = 0 ]; then
+ rm $TMP/selectHD
+ exit
+fi
+
+
+DEVICE=$( cat $TMP/selectHD )
+rm $TMP/selectHD
+
+dialog --backtitle "RescueCD Area31 Partition Tools" \
+--title " SELECIONE UM METODO DE MONTAGEM " --menu \
+"Por favor escolha um metodo de montagem em \"${DIR_MNT}\":\n" \
+11 80 9 \
+"NO-FSCK" "Montar o dispositivo \"${DEVICE}\" sem checagem de integridade" \
+"FSCK" "Montar o dispositivo \"${DEVICE}\" com checagem de integridade" \
+2> $TMP/select
+if [ ! $? = 0 ]; then
+ rm $TMP/select
+ exit
+fi
+
+SELECT_CONFIGURE="`cat $TMP/select`"
+rm -f $TMP/select
+if [ "${SELECT_CONFIGURE}" = "NO-FSCK" ]; then
+
+umount -f ${DIR_MNT} &> /dev/null
+
+CHECK_MNT="$(mount | grep -w "${DIR_MNT}" | wc -l)"
+if [ "${CHECK_MNT}" = "0" ]; then
+	mount ${DEVICE} ${DIR_MNT}
+fi
+
+
+
+elif [ "${SELECT_CONFIGURE}" = "FSCK" ]; then
+
+umount -f ${DIR_MNT} &> /dev/null
+fsck -f -y ${DEVICE}
+mount ${DEVICE} ${DIR_MNT}
+
+fi
+
+  echo "Sua partição foi ativada com sucesso. O ponto de montagem" > $TMP/customdirmsg
+  echo "/mnt/custom será utilizado para personalização do RescueCD." >> $TMP/customdirmsg
+  echo >> $TMP/customdirmsg
+  dialog --title " TARGET /mnt/custom MONTADO " --exit-label OK --textbox $TMP/customdirmsg 7 72
+  rm $TMP/customdirmsg
+
+sh /usr/share/sysresccd-area31/sysresccd-area31-showmount
