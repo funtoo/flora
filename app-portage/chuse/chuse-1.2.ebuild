@@ -13,7 +13,7 @@ SLOT="0"
 KEYWORDS="*"
 SRC_URI="https://gitlab.com/apinsard/chuse/repository/archive.tar.gz?ref=${PV} -> ${P}.tar.gz"
 
-DEPEND="dev-python/appi:0/0.1"
+DEPEND="|| ( dev-python/appi:0/0.1 dev-python/appi:0/0.2 )"
 RDEPEND="${DEPEND}"
 
 src_unpack() {
