@@ -12,11 +12,11 @@ APPI_RELEASE=${PV##*.}
 if [ "$APPI_RELEASE" = 9999 ]; then
 	inherit git-r3
 	SRC_URI=""
-	EGIT_REPO_URI="https://gitlab.com/apinsard/appi.git"
+	EGIT_REPO_URI="https://github.com/apinsard/appi.git"
 	EGIT_BRANCH="${APPI_VERSION}"
 	KEYWORDS=""
 else
-	SRC_URI="https://gitlab.com/apinsard/appi/repository/archive.tar.gz?ref=v${PV} -> ${P}.tar.gz"
+	SRC_URI="https://github.com/apinsard/appi/archive/v${PV}.tar.gz -> ${P}.tar.gz mirror://funtoo/${P}.tar.gz"
 	KEYWORDS="~*"
 fi
 
@@ -34,12 +34,3 @@ RDEPEND=""
 DEPEND="${RDEPEND}
 	dev-python/setuptools[${PYTHON_USEDEP}]
 "
-
-src_unpack() {
-	if [ "$APPI_RELEASE" = 9999 ]; then
-		git-r3_src_unpack
-	else
-		default
-		mv "${WORKDIR}/${PN}-v${PV}"-* "${S}"
-	fi
-}
