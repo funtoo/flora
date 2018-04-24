@@ -5,7 +5,7 @@ inherit cmake-utils
 
 DESCRIPTION="Voxelands is a sandbox construction game based on Minetest."
 HOMEPAGE="http://www.voxelands.com/"
-SRC_URI="https://gitlab.com/voxelands/voxelands/repository/archive.tar.gz?ref=v${PV} -> ${P}.tar.gz"
+SRC_URI="https://github.com/voxelands/voxelands/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="GPL-3"
 SLOT="0"
@@ -25,10 +25,6 @@ RDEPEND="
 DEPEND="${RDEPEND}
 	virtual/jpeg
 "
-src_unpack() {
-	default
-	mv "${WORKDIR}/${PN}-v${PV}"-* "${S}"
-}
 
 src_prepare() {
 	default
