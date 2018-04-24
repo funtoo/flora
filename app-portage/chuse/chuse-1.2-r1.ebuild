@@ -11,15 +11,10 @@ HOMEPAGE="https://gitlab.com/apinsard/chuse"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="*"
-SRC_URI="https://gitlab.com/apinsard/chuse/repository/archive.tar.gz?ref=${PV} -> ${P}.tar.gz"
+SRC_URI="https://github.com/apinsard/chuse/archive/${PV}.tar.gz -> ${P}.tar.gz"
 
 DEPEND="|| ( dev-python/appi:0/0.1 dev-python/appi:0/0.2 )"
 RDEPEND="${DEPEND}"
-
-src_unpack() {
-	default
-	mv "${WORKDIR}/${P}"-* "${S}"
-}
 
 src_prepare() {
 	einfo "Converting shebangs for python3..."
