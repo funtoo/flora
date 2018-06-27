@@ -2,9 +2,6 @@
 <!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
   <maintainer type="person">
-    <email>steev@gentoo.org</email>
+    <email>liaotao@wayoftao.net</email>
   </maintainer>
-  <upstream>
-    <remote-id type="sourceforge">tilda</remote-id>
-  </upstream>
 </pkgmetadata>
