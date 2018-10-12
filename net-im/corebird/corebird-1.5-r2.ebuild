@@ -18,8 +18,8 @@ IUSE="debug spellcheck"
 RDEPEND="dev-db/sqlite:3
 	>=dev-libs/glib-2.44:2
 	dev-libs/json-glib
-	>=media-plugins/gst-plugins-meta:1.0[X]
-	>=media-libs/gst-plugins-base:1.0[X]
+	media-plugins/gst-plugins-meta:1.0[X]
+	media-libs/gst-plugins-base:1.0[X]
 	>=media-libs/gst-plugins-bad-1.6:1.0[X,gtk]
 	media-libs/gst-plugins-good:1.0
 	media-plugins/gst-plugins-libav:1.0
