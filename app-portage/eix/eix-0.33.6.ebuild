@@ -1,9 +1,9 @@
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
-PLOCALES="de ru"
-inherit autotools bash-completion-r1 l10n systemd flag-o-matic
+inherit autotools bash-completion-r1 flag-o-matic tmpfiles
 
 DESCRIPTION="Search and query ebuilds"
 HOMEPAGE="https://github.com/vaeth/eix/"
@@ -11,7 +11,7 @@ SRC_URI="https://github.com/vaeth/eix/releases/download/v${PV}/${P}.tar.xz"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~ppc-aix ~x64-cygwin ~amd64-fbsd ~sparc-fbsd ~x86-fbsd ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~sparc-solaris ~sparc64-solaris ~x64-solaris ~x86-solaris"
+KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~ppc-aix ~x64-cygwin ~amd64-fbsd ~x86-fbsd ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~sparc-solaris ~sparc64-solaris ~x64-solaris ~x86-solaris"
 IUSE="debug doc nls sqlite"
 
 BOTHDEPEND="nls? ( virtual/libintl )
@@ -38,15 +38,15 @@ src_prepare() {
 	sed -e "/eixf_source=/s:push.sh:cat \"${EROOT}usr/share/push/push.sh\":" \
 		-e "/eixf_source=/s:quoter_pipe.sh:cat \"${EROOT}usr/share/quoter/quoter_pipe.sh\":" \
 		-i src/eix-functions.sh.in || die
-	sed -e "s:'\$(bindir)/eix-functions.sh':cat \\\\\"${EROOT}usr/share/eix/eix-functions.sh\\\\\":" \
+	sed -e "s:'\$(bindir)/eix-functions.sh':cat \\\\\"${EROOT}usr/share/eix/eix-functions\\\\\":" \
 		-i src/Makefile.am || die
-	eapply "${FILESDIR}"/${P}-meta-repo.patch
+	eapply "${FILESDIR}"/${PN}-0.33.2-meta-repo.patch
 	eautoreconf
 }
 
 src_configure() {
 	local myconf=(
-		$(use_enable debug paranoicasserts)
+		$(use_enable debug paranoic-asserts)
 		$(use_enable nls)
 		$(use_with doc extra-doc)
 		$(use_with sqlite)
@@ -75,7 +75,7 @@ src_configure() {
 	)
 
 	# https://github.com/vaeth/eix/issues/35
-	append-cxxflags -std=c++11
+	append-cxxflags -std=c++14
 
 	econf "${myconf[@]}"
 }
@@ -83,21 +83,14 @@ src_configure() {
 src_install() {
 	default
 	dobashcomp bash/eix
-	systemd_dotmpfilesd tmpfiles.d/eix.conf
+	dotmpfiles tmpfiles.d/eix.conf
 
-	insinto /usr/share/${PN}
-	doins "${ED}"/usr/bin/eix-functions.sh
-	rm -r "${ED}"/usr/bin/eix-functions.sh || die
+	rm -r "${ED%/}"/usr/bin/eix-functions.sh || die
 
-	keepdir /var/cache/eix
 }
 
 pkg_postinst() {
-	if ! use prefix; then
-		# note: if this is done in src_install(), portage:portage
-		# ownership may be reset to root
-		chown portage:portage "${EROOT%/}"/var/cache/eix || die
-	fi
+		tmpfiles_process eix.conf
 
 	local obs=${EROOT%/}/var/cache/eix.previous
 	if [[ -f ${obs} ]]; then
