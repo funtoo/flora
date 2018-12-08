@@ -1,5 +1,4 @@
-#!/sbin/runscript
-# Copyright 1999-2009 Funtoo Technologies 
+#!/sbin/openrc-run
 # Distributed under the terms of the GNU General Public License v2
 
 name="unfsd NFS server"
