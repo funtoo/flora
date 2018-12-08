@@ -1,4 +1,3 @@
-# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -7,7 +6,7 @@ inherit xdg-utils gnome2-utils cmake-utils
 
 DESCRIPTION="Lightweight Tox client"
 HOMEPAGE="https://utox.io"
-SRC_URI="https://github.com/uTox/uTox/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://github.com/uTox/uTox/releases/download/v0.17.0/uTox-0.17.0-full.tar.gz -> ${P}.tar.gz"
 
 LICENSE="GPL-3"
 SLOT="0"
@@ -31,13 +30,14 @@ DEPEND="${RDEPEND}
 	test? ( dev-libs/check )
 	virtual/pkgconfig"
 
-S="${WORKDIR}/uTox-${PV}"
+S="${WORKDIR}/uTox"
 
 src_configure() {
 	local mycmakeargs=(
 		-DENABLE_FILTERAUDIO=$(usex filter_audio ON OFF)
 		-DENABLE_DBUS=$(usex dbus ON OFF)
 		-DENABLE_TESTS=$(usex test ON OFF)
+		-DENABLE_ASAN=OFF
 	)
 	cmake-utils_src_configure
 }
