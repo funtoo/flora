@@ -1,8 +1,6 @@
-# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Id$
 
-EAPI=5
+EAPI=6
 
 inherit eutils toolchain-funcs
 
@@ -16,11 +14,11 @@ KEYWORDS="~alpha ~amd64 ~hppa ~mips ~ppc ~ppc64 ~sparc ~x86"
 
 RDEPEND="x11-libs/libX11"
 DEPEND="${RDEPEND}
-        !x11-misc/unclutter
-        x11-libs/libXfixes
-        x11-libs/libXi
-        app-text/asciidoc
-        dev-libs/libev"
+	!x11-misc/unclutter
+	x11-libs/libXfixes
+	x11-libs/libXi
+	app-text/asciidoc
+	dev-libs/libev"
 
 S=${WORKDIR}/${P}
 
@@ -30,5 +28,5 @@ src_compile() {
 
 src_install () {
 	dobin unclutter
-        doman ${S}/man/unclutter-xfixes.1
+	doman ${S}/man/unclutter-xfixes.1
 }
