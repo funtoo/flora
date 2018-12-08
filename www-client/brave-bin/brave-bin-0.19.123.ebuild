@@ -4,7 +4,7 @@ EAPI=6
 
 BRAVE_PN="${PN/-bin}"
 
-inherit linux-info
+inherit desktop linux-info
 
 DESCRIPTION="Brave Web Browser"
 HOMEPAGE="https://brave.com"
