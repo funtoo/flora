@@ -19,7 +19,7 @@ DEPEND="
 	${PYTHON_DEPS}
 	>=x11-libs/gtk+-3.0:3
 	dev-python/pygobject:3[cairo,${PYTHON_USEDEP}]
-	media-libs/mlt[sdl1,python,ffmpeg,gtk,${PYTHON_USEDEP}]
+	>=media-libs/mlt-6.12.0-r1[sdl1,python,ffmpeg,gtk,${PYTHON_USEDEP}]
 	dev-python/dbus-python[${PYTHON_USEDEP}]
 	media-plugins/frei0r-plugins
 	media-plugins/swh-plugins
