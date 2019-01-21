@@ -11,18 +11,19 @@ SLOT="0"
 KEYWORDS="alpha amd64 hppa mips ppc ppc64 sparc x86"
 IUSE=""
 
+# Please remove these ebuilds first:
+#sys-apps/sysresccd-scripts
+#sys-apps/sysresccd-custom
 
 DEPEND=">=dev-lang/python-2.4.0
 		dev-util/dialog
 		dev-libs/libisoburn
 		sys-fs/squashfs-tools
 		sys-apps/hwsetup
-		sys-apps/sysresccd-scripts
-		sys-apps/sysresccd-custom
 		app-backup/fsarchiver
 		sys-apps/util-linux
 		app-admin/pwgen
-        >=app-shells/bash-3.1"
+		>=app-shells/bash-3.1"
 RDEPEND="${DEPEND}"
 
 src_compile() {
@@ -55,5 +56,14 @@ src_install()
 	newinitd "${S}"/load-fonts-keymaps load-fonts-keymaps
 	newinitd "${S}"/sysresccd sysresccd
 	newinitd "${S}"/netconfig2 netconfig2
+	dosbin "${S}"/sysresccd-scripts/autorun
+	dosbin "${S}"/sysresccd-scripts/knx-hdinstall
+	dosbin "${S}"/sysresccd-scripts/mountsys
+	dosbin "${S}"/sysresccd-scripts/sysreport
+	dosbin "${S}"/sysresccd-scripts/sysresccd-backstore
+	dosbin "${S}"/sysresccd-scripts/sysresccd-cleansys
+	dosbin "${S}"/sysresccd-scripts/sysresccd-custom
+	dosbin "${S}"/sysresccd-scripts/sysresccd-pkgstats
+	dosbin "${S}"/sysresccd-scripts/sysresccd-usbstick
 	dosbin "${S}"/sysresccd-area31 || die
 }
