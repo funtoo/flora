@@ -5,10 +5,11 @@
 EAPI=6
 
 inherit eutils pax-utils
-RELEASE="0f3794b38477eea13fb47fbe15a42798e6129338"
+RELEASE="2213894ea0415ee8c85c5eea0d0ff81ecc191529"
+RELTIME="1562627471"
 DESCRIPTION="Multiplatform Visual Studio Code from Microsoft"
 HOMEPAGE="https://code.visualstudio.com"
-SRC_URI="https://az764295.vo.msecnd.net/stable/${RELEASE}/code-stable-1562161049.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://az764295.vo.msecnd.net/stable/${RELEASE}/code-stable-${RELTIME}.tar.gz -> ${P}.tar.gz"
 RESTRICT="mirror strip"
 
 LICENSE="Microsoft"
@@ -83,7 +84,7 @@ src_install(){
 	doins -r *
 	dosym "/opt/${PN}/code" "/usr/bin/vscode"
 	make_wrapper "${PN}" "/opt/${PN}/code"
-	make_desktop_entry "${PN}" "Visual Studio Code" "${PN}" "Development;IDE"
+	domenu ${FILESDIR}/${PN}.desktop
 	doicon ${FILESDIR}/${PN}.png
 	fperms +x "/opt/${PN}/code"
 	fperms +x "/opt/${PN}/libEGL.so"
