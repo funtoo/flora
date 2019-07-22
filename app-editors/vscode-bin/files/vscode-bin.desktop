@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Visual Studio Code
+Type=Application
+Comment=Multiplatform Visual Studio Code from Microsoft
+Exec=vscode-bin %F
+TryExec=vscode-bin
+Icon=vscode-bin
+Categories=Development;IDE;
