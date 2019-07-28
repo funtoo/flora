@@ -6,8 +6,9 @@ inherit qmake-utils eutils
 
 MY_PN="MediaElch"
 DESCRIPTION="Video metadata scraper"
-SRC_URI=https://github.com/Komet/${MY_PN}/archive/v${PV}.tar.gz
+SRC_URI="https://github.com/Komet/${MY_PN}/archive/v${PV}.tar.gz -> ${MY_PN}-${PV}.tar.gz"
 HOMEPAGE="http://www.mediaelch.de/"
+S="${WORKDIR}/${MY_PN}-${PV}"
 
 SLOT="0"
 LICENSE="GPL-3"
@@ -26,23 +27,14 @@ DEPEND="
 RDEPEND="${DEPEND}
 dev-qt/qtquickcontrols:5"
 
-src_unpack() {
-	unpack v${PV}.tar.gz
-	# rename extracted folder(lower case)
-	# not renaming causes errors in src_* functions
-	mv "${WORKDIR}/${MY_PN}-${PV}" "${WORKDIR}/${PN}-${PV}"
-}
+PATCHES=(
+	"${FILESDIR}/${PN}_external_quazip_qmake.patch"
+	"${FILESDIR}/${PN}_external_quazip_TvShowUpdater.patch"
+	"${FILESDIR}/${PN}_external_quazip_ExportTemplateLoader.patch"
+)
 
 src_prepare()
 {
-	# modify include paths for select source files
-	sed 's|quazip/quazip/|quazip5/|g' \
-		-i src/export/ExportTemplateLoader.cpp || die "CPP Sed Failed" 
-	sed 's|quazip/quazip/|quazip5/|g' \
-		-i src/tvShows/TvShowUpdater.cpp || die "CPP Sed Failed" 
-	# patch qmake project file to link to quazip dynamic library
-	# and disable building internal static qauzip
-	eapply "${FILESDIR}/${PN}_external_quazip_qmake.patch" || die
 	default
 }
 
