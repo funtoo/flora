@@ -5,11 +5,10 @@
 EAPI=6
 
 inherit eutils pax-utils
-RELEASE="036a6b1d3ac84e5ca96a17a44e63a87971f8fcc8"
-RELTIME="1565227941"
+LINKID='620884'
 DESCRIPTION="Multiplatform Visual Studio Code from Microsoft"
 HOMEPAGE="https://code.visualstudio.com"
-SRC_URI="https://az764295.vo.msecnd.net/stable/${RELEASE}/code-stable-${RELTIME}.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://go.microsoft.com/fwlink/?LinkID=${LINKID} -> ${P}.tar.gz"
 RESTRICT="mirror strip"
 LICENSE="Microsoft"
 SLOT="0"
