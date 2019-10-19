@@ -1,0 +1,24 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index e61a5b9..48012db 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -333,11 +333,6 @@ configure_file(
+     @ONLY
+ )
+ 
+-add_custom_command(TARGET ${PROJECT_NAME}
+-    COMMAND gzip -c -n ${CMAKE_CURRENT_BINARY_DIR}/flacon.1 > ${CMAKE_CURRENT_BINARY_DIR}/flacon.1.gz
+-)
+-
+-
+ if(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
+     set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "Flacon")
+     install(TARGETS ${PROJECT_NAME} RUNTIME                 DESTINATION Flacon.app/Contents/MacOS)
+@@ -349,7 +344,6 @@ if(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
+ else()
+     install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
+     install(FILES   ${QM_FILES}             DESTINATION ${TRANSLATIONS_DIR})
+-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/flacon.1.gz DESTINATION share/man/man1)
+ 
+     install(FILES   ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.desktop        DESTINATION "share/applications")
+     install(FILES   ${CMAKE_CURRENT_BINARY_DIR}/com.github.Flacon.metadata.xml DESTINATION "share/metainfo")

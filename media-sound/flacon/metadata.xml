@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<!-- maintainer-needed -->
+	<upstream>
+		<changelog>https://flacon.github.io/changelog/</changelog>
+		<remote-id type="github">flacon/flacon</remote-id>
+	</upstream>
+</pkgmetadata>
