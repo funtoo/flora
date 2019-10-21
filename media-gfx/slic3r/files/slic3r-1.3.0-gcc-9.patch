@@ -1,0 +1,21 @@
+From 013189a97f858c712338cf4638022feabdecc1fa Mon Sep 17 00:00:00 2001
+From: Joseph Lenox <lenox.joseph@gmail.com>
+Date: Tue, 1 Jan 2019 14:59:19 -0600
+Subject: [PATCH] Need to add header for boost::noncopyable
+
+---
+ xs/src/libslic3r/GCodeSender.hpp | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/xs/src/libslic3r/GCodeSender.hpp b/xs/src/libslic3r/GCodeSender.hpp
+index cc0b298327..0f39f5a3d1 100644
+--- a/xs/src/libslic3r/GCodeSender.hpp
++++ b/xs/src/libslic3r/GCodeSender.hpp
+@@ -9,6 +9,7 @@
+ #include <boost/asio.hpp>
+ #include <boost/bind.hpp>
+ #include <boost/thread.hpp>
++#include <boost/core/noncopyable.hpp>
+ 
+ namespace Slic3r {
+ 
