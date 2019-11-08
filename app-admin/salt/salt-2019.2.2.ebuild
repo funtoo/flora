@@ -1,8 +1,8 @@
 # Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
-PYTHON_COMPAT=( python2_7 )
+EAPI=7
+PYTHON_COMPAT=( python2_7 python3_6 )
 
 inherit eutils systemd distutils-r1
 
@@ -28,6 +28,7 @@ IUSE+=" openssl portage profile redis selinux test timelib raet +zeromq vim-synt
 
 RDEPEND="sys-apps/pciutils
 	dev-python/jinja[${PYTHON_USEDEP}]
+	dev-python/libnacl[${PYTHON_USEDEP}]
 	>=dev-python/msgpack-0.3[${PYTHON_USEDEP}]
 	dev-python/pyyaml[${PYTHON_USEDEP}]
 	dev-python/markupsafe[${PYTHON_USEDEP}]
@@ -57,10 +58,10 @@ RDEPEND="sys-apps/pciutils
 	mongodb? ( dev-python/pymongo[${PYTHON_USEDEP}] )
 	portage? ( sys-apps/portage[${PYTHON_USEDEP}] )
 	keyring? ( dev-python/keyring[${PYTHON_USEDEP}] )
-	mysql? ( dev-python/mysql-python[${PYTHON_USEDEP}] )
+	mysql? ( dev-python/mysql-python[$(python_gen_usedep 'python2*')] )
 	redis? ( dev-python/redis-py[${PYTHON_USEDEP}] )
 	selinux? ( sec-policy/selinux-salt )
-	timelib? ( dev-python/timelib[${PYTHON_USEDEP}] )
+	timelib? ( dev-python/timelib[$(python_gen_usedep 'python2*')] )
 	nova? ( >=dev-python/python-novaclient-2.17.0[${PYTHON_USEDEP}] )
 	neutron? ( >=dev-python/python-neutronclient-2.3.6[${PYTHON_USEDEP}] )
 	gnupg? ( dev-python/python-gnupg[${PYTHON_USEDEP}] )
@@ -68,13 +69,16 @@ RDEPEND="sys-apps/pciutils
 	vim-syntax? ( app-vim/salt-vim )"
 DEPEND="dev-python/setuptools[${PYTHON_USEDEP}]
 	test? (
-		dev-python/pytest-salt[${PYTHON_USEDEP}]
+		>=dev-python/pytest-salt-2018.12.8[${PYTHON_USEDEP}]
+		>=dev-python/jsonschema-3.0[${PYTHON_USEDEP}]
+		dev-python/pytest-helpers-namespace[${PYTHON_USEDEP}]
 		dev-python/psutil[${PYTHON_USEDEP}]
 		dev-python/pytest[${PYTHON_USEDEP}]
+		dev-python/pytest-catchlog[${PYTHON_USEDEP}]
 		dev-python/pip[${PYTHON_USEDEP}]
 		dev-python/virtualenv[${PYTHON_USEDEP}]
 		>=dev-python/mock-2.0.0[${PYTHON_USEDEP}]
-		dev-python/timelib[${PYTHON_USEDEP}]
+		dev-python/timelib[$(python_gen_usedep 'python2*')]
 		>=dev-python/boto-2.32.1[${PYTHON_USEDEP}]
 		!x86? ( >=dev-python/boto3-1.2.1[${PYTHON_USEDEP}] )
 		>=dev-python/moto-0.3.6[${PYTHON_USEDEP}]
@@ -89,15 +93,19 @@ REQUIRED_USE="|| ( raet zeromq )"
 RESTRICT="x86? ( test )"
 
 PATCHES=(
-	"${FILESDIR}/${PN}-2017.7.0-dont-realpath-tmpdir.patch"
-	"${FILESDIR}/${PN}-2017.7.8-tests.patch"
+	"${FILESDIR}/salt-2017.7.0-dont-realpath-tmpdir.patch"
+	"${FILESDIR}/salt-2019.2.0-tests.patch"
+	"${FILESDIR}/salt-2019.2.0-skip-tests-that-oom-machine.patch"
+	"${FILESDIR}/salt-2019.2.2-newer-deps.patch"
+	"${FILESDIR}/salt-2019.2.2-workaround-broken-mock-on-py2.patch"
 )
 
 python_prepare() {
+	# remove tests with external dependencies that may not be available
 	rm tests/unit/{test_zypp_plugins.py,utils/test_extend.py} || die
-	rm tests/unit/modules/test_boto_{vpc,secgroup,elb}.py || die
+	rm tests/unit/modules/test_{file,boto_{vpc,secgroup,elb}}.py || die
 	rm tests/unit/states/test_boto_vpc.py || die
-	rm tests/unit/modules/test_kubernetes.py || die
+
 	# allow the use of the renamed msgpack
 	sed -i '/^msgpack/d' requirements/base.txt || die
 }
