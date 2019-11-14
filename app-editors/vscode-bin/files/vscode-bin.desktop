@@ -1,8 +1,9 @@
 [Desktop Entry]
 Name=Visual Studio Code
-Type=Application
 Comment=Multiplatform Visual Studio Code from Microsoft
-Exec=vscode-bin %F
-TryExec=vscode-bin
+Exec=vscode-bin --no-sandbox --unity-launch %F
 Icon=vscode-bin
-Categories=Development;IDE;
+Type=Application
+StartupNotify=false
+Categories=Utility;TextEditor;Development;IDE;
+MimeType=text/plain;

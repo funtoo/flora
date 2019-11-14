@@ -2,15 +2,11 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI=6
+EAPI=7
 
-# NOTE: https://github.com/microsoft/vscode/issues/84166
-# corrected by forcing required permissions on file chrome-sandbox
-# to be re-examined on next point release to confirm situation persists.
-
-inherit eutils pax-utils
-HASHID='86405ea23e3937316009fc27c9361deee66ffbf5'
-DATEID='1573064450'
+inherit desktop eutils pax-utils
+HASHID='8795a9889db74563ddd43eb0a897a2384129a619'
+DATEID='1573664143'
 DESCRIPTION="Multiplatform Visual Studio Code from Microsoft"
 HOMEPAGE="https://code.visualstudio.com"
 SRC_URI="https://az764295.vo.msecnd.net/stable/${HASHID}/code-stable-${DATEID}.tar.gz -> ${P}.tar.gz"
@@ -87,8 +83,7 @@ src_install(){
 	dosym "/opt/${PN}/code" "/usr/bin/vscode"
 	make_wrapper "${PN}" "/opt/${PN}/code"
 	domenu ${FILESDIR}/${PN}.desktop
-	doicon ${FILESDIR}/${PN}.png
-	fperms 4755 "/opt/vscode-bin/chrome-sandbox"
+	newicon ${S}/resources/app/resources/linux/code.png ${PN}.png
 	fperms +x "/opt/${PN}/code"
 	fperms +x "/opt/${PN}/libEGL.so"
 	fperms +x "/opt/${PN}/libGLESv2.so"
