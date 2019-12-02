@@ -4,7 +4,7 @@
 
 EAPI=7
 
-inherit desktop eutils pax-utils
+inherit desktop eutils pax-utils xdg
 HASHID='f359dd69833dd8800b54d458f6d37ab7c78df520'
 DATEID='1574694065'
 DESCRIPTION="Multiplatform Visual Studio Code from Microsoft"
@@ -76,7 +76,7 @@ pkg_setup() {
 	S="${WORKDIR}/VSCode-linux-x64"
 }
 
-src_install(){
+src_install() {
 	pax-mark m code
 	insinto "/opt/${PN}"
 	doins -r *
@@ -96,7 +96,12 @@ src_install(){
 	newins "resources/app/LICENSE.rtf" "LICENSE.rtf"
 }
 
-pkg_postinst(){
+pkg_postinst() {
+	xdg_desktop_database_update
 	elog "You may install some additional utils, so check them in:"
 	elog "https://code.visualstudio.com/Docs/setup#_additional-tools"
+}
+
+pkg_postrm() {
+	xdg_desktop_database_update
 }
