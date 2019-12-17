@@ -23,12 +23,12 @@ LICENSE="GPL-2"
 SLOT="0"
 IUSE="debug +module +tools module-src"
 
-DEPEND="tools? ( net-libs/libmnl )"
+DEPEND="tools? ( net-libs/libmnl || ( net-firewall/nftables net-firewall/iptables ) )"
 RDEPEND="${DEPEND}"
 
 MODULE_NAMES="wireguard(kernel/drivers/net:src)"
 BUILD_TARGETS="module"
-CONFIG_CHECK="NET INET NET_UDP_TUNNEL CRYPTO_BLKCIPHER"
+CONFIG_CHECK="NET INET NET_UDP_TUNNEL CRYPTO_ALGAPI"
 
 wg_quick_optional_config_nob() {
 	CONFIG_CHECK="$CONFIG_CHECK ~$1"
@@ -41,6 +41,9 @@ pkg_setup() {
 			wg_quick_optional_config_nob IP_ADVANCED_ROUTER
 			wg_quick_optional_config_nob IP_MULTIPLE_TABLES
 			wg_quick_optional_config_nob NETFILTER_XT_MARK
+			wg_quick_optional_config_nob NETFILTER_XT_CONNMARK
+			wg_quick_optional_config_nob IP6_NF_RAW
+			wg_quick_optional_config_nob IP_NF_RAW
 		fi
 
 		linux-mod_pkg_setup
