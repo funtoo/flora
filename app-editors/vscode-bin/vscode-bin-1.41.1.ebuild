@@ -5,8 +5,10 @@
 EAPI=7
 
 inherit desktop eutils pax-utils xdg
-HASHID='9579eda04fdb3a9bba2750f15193e5fafe16b959'
-DATEID='1576089840'
+
+HASHID='26076a4de974ead31f97692a0d32f90d735645c0'
+DATEID='1576682093'
+
 DESCRIPTION="Multiplatform Visual Studio Code from Microsoft"
 HOMEPAGE="https://code.visualstudio.com"
 SRC_URI="https://az764295.vo.msecnd.net/stable/${HASHID}/code-stable-${DATEID}.tar.gz -> ${P}.tar.gz"
