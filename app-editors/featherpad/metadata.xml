@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+<maintainer type="person">
+	<email>scott.wl.furry@gmail.com</email>
+	<description>Scott Furry</description>
+</maintainer>
+<maintainer type="project">
+	<email>tsujan2000@gmail.com</email>
+	<name>Pedram Pourang</name>
+</maintainer>
+<longdescription>
+FeatherPad is is a lightweight Qt5 plain-text editor for Linux.
+It is independent of any desktop environment and is rich in features
+</longdescription>
+<use>
+	<flag name="hunspell">Uses <pkg>app-text/hunspell</pkg> for spell checking.</flag>
+</use>
+</pkgmetadata>
