@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
-inherit qmake-utils eutils
+inherit cmake-utils xdg-utils gnome2-utils
 
 MY_PN="MediaElch"
 DESCRIPTION="Video metadata scraper"
@@ -13,7 +13,7 @@ S="${WORKDIR}/${MY_PN}-${PV}"
 SLOT="0"
 LICENSE="GPL-3"
 KEYWORDS="~amd64 ~x86"
-IUSE="pulseaudio"
+IUSE=""
 
 # application uses static built quazip
 DEPEND="
@@ -21,29 +21,36 @@ DEPEND="
 	dev-qt/qtmultimedia:5[widgets]
 	dev-qt/qtconcurrent:5
 	dev-libs/quazip
-	media-libs/libmediainfo
-	pulseaudio? ( media-sound/pulseaudio )"
+	media-libs/libmediainfo"
 
 RDEPEND="${DEPEND}
 dev-qt/qtquickcontrols:5"
 
-PATCHES=(
-	"${FILESDIR}/${PN}_external_quazip_qmake.patch"
-	"${FILESDIR}/${PN}_external_quazip_TvShowUpdater.patch"
-	"${FILESDIR}/${PN}_external_quazip_ExportTemplateLoader.patch"
-)
-
 src_prepare()
 {
-	default
+	cmake-utils_src_prepare
 }
 
 src_configure()
 {
-	eqmake5 ${MY_PN}.pro CONFIG+=release
+        local mycmakeargs=(
+		-DUSE_EXTERN_QUAZIP="On"
+		-DDISABLE_UPDATER="On"
+		-DCMAKE_INSTALL_PREFIX="/usr"
+	)
+	cmake-utils_src_configure
 }
 
-src_install()
-{
-	emake INSTALL_ROOT="${D}" install
+src_install() {
+	cmake-utils_src_install
+}
+
+pkg_postinst() {
+	gnome2_icon_cache_update
+	xdg_desktop_database_update
+}
+
+pkg_postrm() {
+	gnome2_icon_cache_update
+	xdg_desktop_database_update
 }
