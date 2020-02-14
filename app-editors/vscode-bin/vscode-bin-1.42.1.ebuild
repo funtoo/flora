@@ -1,4 +1,4 @@
-# Copyright 1999-2019 Gentoo Foundation
+# Copyright 1999-2020 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -6,8 +6,8 @@ EAPI=7
 
 inherit desktop eutils pax-utils xdg
 
-HASHID='ae08d5460b5a45169385ff3fd44208f431992451'
-DATEID='1580986866'
+HASHID='c47d83b293181d9be64f27ff093689e8e7aed054'
+DATEID='1581433181'
 
 DESCRIPTION="Multiplatform Visual Studio Code from Microsoft"
 HOMEPAGE="https://code.visualstudio.com"
