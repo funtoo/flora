@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=VsCodium
+Comment=Multiplatform Visual Studio Code from MicrosoftFree/Libre Open Source Software Binaries of VSCode
+Exec=vscodium-bin --no-sandbox --unity-launch %F
+Icon=vscodium-bin
+Type=Application
+StartupNotify=false
+Categories=Utility;TextEditor;Development;IDE;
+MimeType=text/plain;
