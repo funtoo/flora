@@ -82,36 +82,32 @@ RDEPEND="
 	dev-libs/nss
 	app-crypt/libsecret[crypt]"
 
-pkg_setup() {
-	S="${WORKDIR}/VSCodium-linux-x64"
-}
+QA_PRESTRIPPED="opt/${PN}/code"
 
-src_install() {
+S="${WORKDIR}"
+
+src_install(){
 	pax-mark m code
 	insinto "/opt/${PN}"
 	doins -r *
-	dosym "/opt/${PN}/codium" "/usr/bin/codium"
-	make_wrapper "${PN}" "/opt/${PN}/codium"
-	domenu ${FILESDIR}/${PN}.desktop
-	newicon ${S}/resources/app/resources/linux/code.png ${PN}.png
+	dosym "../../opt/${PN}/bin/codium" "/usr/bin/${PN}"
+	dosym "../../opt/${PN}/bin/codium" "/usr/bin/codium"
+	make_desktop_entry "${PN}" "Visual Studio Code" "${PN}" "Development;IDE"
+	doicon "${FILESDIR}/${PN}.png"
 	fperms +x "/opt/${PN}/codium"
-	fperms +x "/opt/${PN}/libEGL.so"
-	fperms +x "/opt/${PN}/libGLESv2.so"
-	fperms +x "/opt/${PN}/libffmpeg.so"
-
-	#fix Spawn EACESS bug #25848
+	fperms +x "/opt/${PN}/bin/codium"
 	fperms +x "/opt/${PN}/resources/app/node_modules.asar.unpacked/vscode-ripgrep/bin/rg"
-
+	fperms +x "/opt/${PN}/resources/app/extensions/git/dist/askpass.sh"
 	insinto "/usr/share/licenses/${PN}"
-	newins "resources/app/LICENSE.rtf" "LICENSE.rtf"
+	for i in resources/app/LICEN*; do
+		newins "${i}" "$(basename ${i})"
+	done
 }
 
-pkg_postinst() {
-	xdg_desktop_database_update
+pkg_postinst(){
 	elog "You may install some additional utils, so check them in:"
 	elog "https://code.visualstudio.com/Docs/setup#_additional-tools"
-}
-
-pkg_postrm() {
-	xdg_desktop_database_update
+	elog ""
+	elog "Upstream renamed the binary from vscodium to codium."
+	elog "remember to update your aliases and shortcuts"
 }
