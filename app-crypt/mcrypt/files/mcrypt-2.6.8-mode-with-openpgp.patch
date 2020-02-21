@@ -1,0 +1,26 @@
+From 3f5f5bf4382c26a85b1a8effed4e43e74df7d31b Mon Sep 17 00:00:00 2001
+From: Russ Magee <rmagee@gmail.com>
+Date: Mon, 23 Oct 2017 22:44:09 -0700
+Subject: [PATCH 3/3] Fixed -m with --openpgp mode
+
+---
+ src/mcrypt.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/src/mcrypt.c b/src/mcrypt.c
+index 2a5fa46..6db344e 100644
+--- a/src/mcrypt.c
++++ b/src/mcrypt.c
+@@ -361,6 +361,9 @@ int main(int argc, char **argv)
+    }
+ 
+    if (info.mode != NULL) {
++       if( info.openpgp != 0 ) {
++           err_quit(_("Specifying mode with openpgp is not supported.\n"));
++       }
+       mode = strdup(info.mode);
+       mcrypt_tolow( mode, strlen(mode));
+    } else {
+-- 
+2.11.1
+

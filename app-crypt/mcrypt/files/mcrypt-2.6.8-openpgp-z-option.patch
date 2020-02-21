@@ -1,0 +1,35 @@
+diff -bBpu a/src/gaaout.c b/src/gaaout.c
+--- a/src/gaaout.c	2007-06-09 08:39:14.000000000 +0000
++++ b/src/gaaout.c	2017-10-20 23:19:14.388906883 +0000
+@@ -138,8 +138,8 @@ void gaa_help(void)
+ 	__gaa_helpsingle('k', "key", _("KEY1 KEY2...KEYN "), _("Specify the key(s)"));
+ 	__gaa_helpsingle(0, "noiv", "", _("Do not use an IV."));
+ 	__gaa_helpsingle('b', "bare", "", _("Do not keep algorithm information in the encrypted file."));
+-	__gaa_helpsingle('z', "gzip", "", _("Use gzip to compress files before encryption."));
+-	__gaa_helpsingle('p', "bzip2", "", _("Use bzip2 to compress files before encryption."));
++	__gaa_helpsingle('z', "gzip", "", _("Use gzip to compress/decompress files before/after encryption/decryption. NOTE: cannot be used if openpgp mode is active."));
++	__gaa_helpsingle('p', "bzip2", "", _("Use bzip2 to compress/decompress files before/after encryption/decryption. NOTE: cannot be used if openpgp mode is active."));
+ 	__gaa_helpsingle(0, "flush", "", _("Immediately flush the output"));
+ 	__gaa_helpsingle('l', "doublecheck", "", _("Double check passwords."));
+ 	__gaa_helpsingle('u', "unlink", "", _("Unlink the input file after encryption or decryption."));
+diff -bBpu a/src/mcrypt.c b/src/mcrypt.c
+--- a/src/mcrypt.c	2007-11-07 17:10:21.000000000 +0000
++++ b/src/mcrypt.c	2017-10-20 23:18:13.144905892 +0000
+@@ -552,11 +552,15 @@ int main(int argc, char **argv)
+ 	       continue;
+ 	    }
+ #ifdef ZIP
++	    if ((openpgp != 0) && ( gzipflag == TRUE || bzipflag == TRUE )) {
++		err_quit(_("Error: Cannot use -z with openpgp mode (does not call gzip or bzip)\n"));
++	    }
++
+ 	    if (stream_flag == FALSE) {
+ 	       if (gzipflag == TRUE)
+-		  strcat(outfile, ".gz");
++		  if (openpgp == 0) strcat(outfile, ".gz");
+ 	       if (bzipflag == TRUE)
+-		  strcat(outfile, ".bz2");
++		  if (openpgp == 0) strcat(outfile, ".bz2");
+ 	    }
+ #endif
+ 	    strcat(outfile, ".nc");
