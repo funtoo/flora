@@ -1,4 +1,5 @@
 # Copyright 1999-2018 Gentoo Authors
+# Copyright 2020 Funtoo Solutions, Inc.
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -50,7 +51,8 @@ RDEPEND="dev-libs/atk:0[${MULTILIB_USEDEP}]
 	ayatana? ( dev-libs/libappindicator:3[${MULTILIB_USEDEP}] )
 	gnome-keyring? ( app-crypt/libsecret )"
 
-QA_PREBUILT="opt/slack/slack
+QA_PREBUILT="opt/slack/chrome-sandbox
+	opt/slack/slack
 	opt/slack/resources/app.asar.unpacked/node_modules/*
 	opt/slack/libnode.so
 	opt/slack/libffmpeg.so
@@ -76,6 +78,7 @@ src_install() {
 	insinto /opt/slack
 	doins -r usr/lib/slack/.
 	fperms +x /opt/slack/slack
+	fperms 4711 /opt/slack/chrome-sandbox
 	dosym ../../opt/slack/slack usr/bin/slack
 
 	use pax_kernel && pax-mark -m "${ED%/}"/opt/slack/slack
