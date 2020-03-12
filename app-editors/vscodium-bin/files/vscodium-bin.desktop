@@ -8,7 +8,7 @@ StartupNotify=true
 Categories=Utility;TextEditor;Development;IDE;
 MimeType=text/plain;inode/directory;
 Actions=new-empty-window;
-Keywords=vscodium;
+Keywords=vscodium;vscodium-bin;
 
 [Desktop Action new-empty-window]
 Name=New Empty Window
