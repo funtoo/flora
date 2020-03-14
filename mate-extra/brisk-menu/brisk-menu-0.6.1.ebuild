@@ -32,7 +32,7 @@ DEPEND="
 	app-arch/xz-utils
 "
 RDEPEND="${DEPEND}"
-BDEPEND=""
+BDEPEND="${DEPEND}"
 
 src_unpack() {
 	unpack ${A}
@@ -49,5 +49,5 @@ src_configure() {
 }
 
 src_install() {
-	eninja -C build install
+	meson_src_install
 }
