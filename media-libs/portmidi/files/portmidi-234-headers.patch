@@ -1,0 +1,31 @@
+--- a/pm_linux/finddefault.c	2012-04-28 01:25:35.000000000 -0300
++++ b/pm_linux/finddefault.c	2020-03-15 00:36:47.044865308 -0300
+@@ -5,7 +5,11 @@
+ #include <stdlib.h>
+ #include <stdio.h>
+ #include <string.h>
++#include <ctype.h>
+ #include "portmidi.h"
++#include "finddefault.h"
++#include "pmutil.h"
++#include "pminternal.h"
+ 
+ #define STRING_MAX 256
+ 
+--- a/pm_linux/finddefault.h	1969-12-31 21:00:00.000000000 -0300
++++ b/pm_linux/finddefault.h	2020-03-15 00:36:47.044865308 -0300
+@@ -0,0 +1,3 @@
++/* finddefault.h */
++
++PmDeviceID find_default_device(char *path, int input, PmDeviceID id);
+--- a/pm_linux/pmlinux.c	2009-10-14 01:32:58.000000000 -0300
++++ b/pm_linux/pmlinux.c	2020-03-15 00:36:47.048198642 -0300
+@@ -12,6 +12,8 @@
+ 
+ #include "stdlib.h"
+ #include "portmidi.h"
++#include "pmlinux.h"
++#include "finddefault.h"
+ #include "pmutil.h"
+ #include "pminternal.h"
+ 
