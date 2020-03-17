@@ -21,6 +21,8 @@ SRC_URI="https://www.github.com/${GITHUB_USER}/${GITHUB_REPO}/releases/download/
 
 DEPEND="
 	>=x11-libs/gtk+-3.18:3
+	>=x11-libs/libnotify-0.7.0
+	>=x11-libs/gtk+-3.22
 	>=mate-base/mate-panel-1.16.0
 	>=dev-libs/glib-2.44:2
 	dev-perl/XML-Parser
@@ -28,7 +30,6 @@ DEPEND="
 	dev-util/ninja
 	gnome-base/dconf
 	sys-devel/gettext
-	>=x11-libs/libnotify-0.7.0
 	app-arch/xz-utils
 "
 RDEPEND="${DEPEND}"
