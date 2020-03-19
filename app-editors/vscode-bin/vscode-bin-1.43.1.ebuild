@@ -9,12 +9,11 @@ inherit desktop eutils pax-utils xdg
 MY_INSTALL_DIR="/opt/${PN}"
 MY_EXEC="code"
 MY_PN=${PN/-bin/}
-HASHID='78a4c91400152c0f27ba4d363eb56d2835f9903a'
-DATEID='1583783449'
 
 DESCRIPTION="Multiplatform Visual Studio Code from Microsoft"
 HOMEPAGE="https://code.visualstudio.com"
-SRC_URI="https://az764295.vo.msecnd.net/stable/${HASHID}/code-stable-${DATEID}.tar.gz -> ${P}.tar.gz"
+# linux-x64 folder path implies downloading tarball -> tar.gz
+SRC_URI="https://update.code.visualstudio.com/${PV}/linux-x64/stable -> ${P}.tar.gz"
 RESTRICT="mirror strip"
 LICENSE="Microsoft"
 SLOT="0"
