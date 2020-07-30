@@ -23,7 +23,7 @@ RDEPEND="
 	dev-libs/dbus-glib
 	dev-libs/gobject-introspection
 	>=x11-libs/gtk+-3.22:3
-	>=x11-misc/lightdm-1.19.2[gtk,introspection]
+	>=x11-misc/lightdm-1.19.2[gtk,introspection,non_root]
 	>=net-libs/webkit-gtk-2.16
 "
 DEPEND="${RDEPEND}"
