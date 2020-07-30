@@ -62,13 +62,13 @@ a {
   box-shadow: 0 0 1px 1px #222;
 }
 
-.gentoologo {
+.funtoologo {
   float: left !important;
   margin: 10px !important;
   padding: 0 !important;
-  height: 40px !important;
-  width: 190px !important;
-  background: url('gentoologo.png') no-repeat;
+  height: 100px !important;
+  width: 165px !important;
+  background: url('funtoologo.png') no-repeat;
 }
 
 .footer {
